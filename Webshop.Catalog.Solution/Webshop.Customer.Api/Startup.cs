@@ -25,6 +25,7 @@ namespace Webshop.Customer.Api
 {
     public class Startup
     {
+        private bool useJsondatabase = false;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
