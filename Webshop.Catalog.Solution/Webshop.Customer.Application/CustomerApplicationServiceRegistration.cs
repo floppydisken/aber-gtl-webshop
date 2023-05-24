@@ -17,7 +17,7 @@ namespace Webshop.Customer.Application
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddScoped<IDispatcher>(sp => new Dispatcher(sp.GetService<IMediator>()));
+            services.AddScoped<IDispatcher, Dispatcher>();
 
             return services;
         }
