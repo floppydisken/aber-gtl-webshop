@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Webshop.Domain.Common
-{
-    public abstract class AggregateRoot : Entity
-    {
+namespace Webshop.Domain.Common;
 
-    }
+public abstract class AggregateRoot : Entity
+{
 }

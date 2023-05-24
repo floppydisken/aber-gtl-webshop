@@ -25,18 +25,18 @@ namespace Webshop.Catalog.Application.Features.Product.Requests
             {
                 //name
                 RuleFor(r => r.Name)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Name)).Message);
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Name)).Message.Value);
                 //sku
                 RuleFor(r => r.SKU)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(SKU)).Message);
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(SKU)).Message.Value);
                 //price
                 RuleFor(r => r.Price)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Price)).Message)
-                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(Price), 0).Message);
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Price)).Message.Value)
+                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(Price), 0).Message.Value);
                 //currency
                 RuleFor(r => r.Currency)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Currency)).Message)
-                    .Length(3).WithMessage(Errors.General.ValueOutOfRange(nameof(Currency), 3, 3).Message);
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Currency)).Message.Value)
+                    .Length(3).WithMessage(Errors.General.ValueOutOfRange(nameof(Currency), 3, 3).Message.Value);
             }
         }
     }

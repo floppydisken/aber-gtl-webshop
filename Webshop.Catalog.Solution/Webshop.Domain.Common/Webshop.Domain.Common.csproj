@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Webshop.Domain.Common\Webshop.Domain.Common.csproj" />
+    <PackageReference Include="Vogen" Version="3.0.16" />
   </ItemGroup>
 
 </Project>

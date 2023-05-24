@@ -23,32 +23,25 @@ namespace Webshop.Catalog.Application.Features.Product.Requests
         {
             public Validator()
             {
-                //Id
-                RuleFor(r=>r.Id)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Id)).Message)
-                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(Id), 0).Message);
-                //name
+                RuleFor(r => r.Id)
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Id)).Message.Value)
+                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(Id), 0).Message.Value);
                 RuleFor(r => r.Name)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Name)).Message);
-                //sku
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Name)).Message.Value);
                 RuleFor(r => r.SKU)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(SKU)).Message);
-                //price
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(SKU)).Message.Value);
                 RuleFor(r => r.Price)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Price)).Message)
-                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(Price), 0).Message);
-                //currency
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Price)).Message.Value)
+                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(Price), 0).Message.Value);
                 RuleFor(r => r.Currency)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Currency)).Message)
-                    .Length(3).WithMessage(Errors.General.ValueOutOfRange(nameof(Currency), 3, 3).Message);
-                //amount in stock
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(Currency)).Message.Value)
+                    .Length(3).WithMessage(Errors.General.ValueOutOfRange(nameof(Currency), 3, 3).Message.Value);
                 RuleFor(r => r.AmountInStock)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(AmountInStock)).Message)
-                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(AmountInStock), 0).Message);
-                //min amount in stock
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(AmountInStock)).Message.Value)
+                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(AmountInStock), 0).Message.Value);
                 RuleFor(r => r.MinStock)
-                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(MinStock)).Message)
-                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(MinStock), 0).Message);
+                    .NotEmpty().WithMessage(Errors.General.ValueIsEmpty(nameof(MinStock)).Message.Value)
+                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(MinStock), 0).Message.Value);
             }
         }
     }

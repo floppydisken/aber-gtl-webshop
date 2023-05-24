@@ -20,8 +20,8 @@ namespace Webshop.Category.Application.Features.Category.Requests
             {
                 RuleFor(r => r.Name).NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Name)).Code + " (" + Errors.General.ValueIsRequired(nameof(Name)).Message + ")");
                 RuleFor(r => r.ParentId)
-                    .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(ParentId)).Message)
-                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(ParentId), 0).Message);
+                    .NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(ParentId)).Message.Value)
+                    .GreaterThanOrEqualTo(0).WithMessage(Errors.General.ValueTooSmall(nameof(ParentId), 0).Message.Value);
             }
         }
     }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Webshop.Customer.Application\Webshop.Customer.Application.csproj" />
+    <ProjectReference Include="..\Webshop.Domain.Commong\Webshop.Domain.Common.csproj" />
   </ItemGroup>
 
 </Project>

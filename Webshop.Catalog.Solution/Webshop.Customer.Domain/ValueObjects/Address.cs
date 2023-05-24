@@ -30,6 +30,7 @@ namespace Webshop.Domain.ValueObjects
             Ensure.That(zipcode, nameof(zipcode)).IsNotNullOrEmpty();
             return Result.Ok<Address>(new Address(street, city, zipcode));
         }
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Street;
