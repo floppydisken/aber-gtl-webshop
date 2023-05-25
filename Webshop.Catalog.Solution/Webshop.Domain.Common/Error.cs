@@ -8,13 +8,13 @@ using Vogen;
 
 namespace Webshop.Domain.Common;
 
-[ValueObject(typeof(string))]
+[ValueObject<string>]
 public partial struct ErrorCode {}
 
-[ValueObject(typeof(string))]
+[ValueObject<string>]
 public partial struct ErrorMessage {}
 
-[ValueObject(typeof(int))]
+[ValueObject<int>]
 public partial struct ErrorStatusCode {}
 
 public class Error : ValueObject

@@ -6,7 +6,7 @@ services:
     image: brhv/webshophelp
     restart: unless-stopped
     ports:
-      - 8000:80      
+      - 8000:80
     networks:
       - backtier
     environment:
@@ -33,7 +33,7 @@ services:
     networks:
       - backtier
   paymentapi:
-   # the payment API
+    # the payment API
     container_name: webshop.payment
     image: brhv/webshoppaymentapi
     restart: unless-stopped
@@ -42,43 +42,52 @@ services:
     networks:
       - backtier
   catalogapi:
-  # the catalog API
+    # the catalog API
     container_name: webshop.catalog
     image: brhv/webshopcatalogapi
     restart: unless-stopped
     ports:
-        - 8084:80
+      - 8084:80
     networks:
-        - backtier
+      - backtier
   customerapi:
-  # the customer API
+    # the customer API
     container_name: webshop.customer
     image: brhv/webshopcustomerapi
     restart: unless-stopped
     ports:
-        - 8085:80
+      - 8085:80
     networks:
-        - backtier
+      - backtier
   sqlexpress:
-  #the sql server
+    #the sql server
     container_name: webshopdatabase
     image: mcr.microsoft.com/mssql/server:latest
     restart: unless-stopped
     ports:
-        - 1433:1433
+      - 1433:1433
     environment:
-        - ACCEPT_EULA=Y
-        - SA_PASSWORD=PSU@password
-        - MSSQL_PID=Express
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PSU@password
+      - MSSQL_PID=Express
     volumes:
-        - ./data:/var/opt/mssql/data
+      - ./data:/var/opt/mssql/data
     networks:
-        - backtier
+      - backtier
+  mongo:
+    image: mongo:latest
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongoadmin
+      MONGO_INITDB_ROOT_PASSWORD: secret
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    networks:
+      - backtier
+
 networks:
   # The presence of these objects is sufficient to define them
   backtier: {}
-
-
-
-
-
