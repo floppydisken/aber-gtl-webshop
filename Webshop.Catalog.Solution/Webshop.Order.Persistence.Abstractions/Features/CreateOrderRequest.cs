@@ -1,4 +1,4 @@
-using Webshop.Domain.Common;
+using Webshop.Application.Contracts;
 
 namespace Webshop.Order.Persistence.Abstractions;
 

@@ -20,6 +20,8 @@
     <ProjectReference Include="..\Webshop.Customer.Application\Webshop.Customer.Application.csproj" />
     <ProjectReference Include="..\Webshop.Customer.Persistence\Webshop.Customer.Persistence.csproj" />
     <ProjectReference Include="..\Webshop.Domain\Webshop.Domain.csproj" />
+    <ProjectReference Include="..\Webshop.Api\Webshop.Api.csproj" />
+    <ProjectReference Include="..\Webshop.Customer.Domain\Webshop.Customer.Domain.csproj" />
   </ItemGroup>
 
 </Project>

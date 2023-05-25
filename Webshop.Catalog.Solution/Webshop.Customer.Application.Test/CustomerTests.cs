@@ -7,6 +7,7 @@ using Webshop.Customer.Application.Features.CreateCustomer;
 using Webshop.Customer.Application.Features.DeleteCustomer;
 using Webshop.Customer.Application.Features.UpdateCustomer;
 using Webshop.Domain.Common;
+using Webshop.Customer.Domain;
 using Xunit;
 
 namespace Webshop.Customer.Application.Test;
@@ -17,7 +18,7 @@ public class CustomerTests
     public void CreateCustomerCommand_InValid_ExpectFailure()
     {
         Action a = () => new CreateCustomerCommand(null);
-        Assert.Throws<ArgumentNullException>(a);         
+        Assert.Throws<ArgumentNullException>(a);
     }
 
     [Fact]
@@ -35,25 +36,25 @@ public class CustomerTests
     }
 
     [Fact]
-    public void CreateCustomerCommand_Valid_ExpectSuccess() 
+    public void CreateCustomerCommand_Valid_ExpectSuccess()
     {
         //for the sake of completeness
         CreateCustomerCommand command = new CreateCustomerCommand(new Domain.AggregateRoots.Customer("Centisoft"));
     }
 
     [Fact]
-    public async Task CreateCustomerCommandHandler_Invoke_repositorycreate_expect_success() 
+    public async Task CreateCustomerCommandHandler_Invoke_repositorycreate_expect_success()
     {
         //arrange
-        var loggerMock = new Mock<Microsoft.Extensions.Logging.ILogger<CreateCustomerCommandHandler>>();            
-        var customerRepositoryMock = new Mock<ICustomerRepository>();            
-        Domain.AggregateRoots.Customer customer = new Domain.AggregateRoots.Customer("Centisoft");            
+        var loggerMock = new Mock<Microsoft.Extensions.Logging.ILogger<CreateCustomerCommandHandler>>();
+        var customerRepositoryMock = new Mock<ICustomerRepository>();
+        Domain.AggregateRoots.Customer customer = new Domain.AggregateRoots.Customer("Centisoft");
         CreateCustomerCommand command = new CreateCustomerCommand(customer);
         CreateCustomerCommandHandler handler = new CreateCustomerCommandHandler(loggerMock.Object, customerRepositoryMock.Object);
         //act
         Result result = await handler.Handle(command);
         //assert
-        customerRepositoryMock.Verify((m => m.CreateAsync(customer)), Times.Once);            
+        customerRepositoryMock.Verify((m => m.CreateAsync(customer)), Times.Once);
         Assert.True(result.Success);
     }
 
@@ -63,7 +64,7 @@ public class CustomerTests
         //arrange
         var loggerMock = new Mock<Microsoft.Extensions.Logging.ILogger<UpdateCustomerCommandHandler>>();
         var customerRepositoryMock = new Mock<ICustomerRepository>();
-        Domain.AggregateRoots.Customer customer = new Domain.AggregateRoots.Customer("Centisoft") { Id = 1};
+        Domain.AggregateRoots.Customer customer = new Domain.AggregateRoots.Customer("Centisoft") { Id = 1 };
         UpdateCustomerCommand command = new UpdateCustomerCommand(customer);
         UpdateCustomerCommandHandler handler = new UpdateCustomerCommandHandler(loggerMock.Object, customerRepositoryMock.Object);
         //act
@@ -78,7 +79,7 @@ public class CustomerTests
     {
         //arrange
         var loggerMock = new Mock<Microsoft.Extensions.Logging.ILogger<DeleteCustomerCommandHandler>>();
-        var customerRepositoryMock = new Mock<ICustomerRepository>();            
+        var customerRepositoryMock = new Mock<ICustomerRepository>();
         DeleteCustomerCommand command = new DeleteCustomerCommand(1);
         DeleteCustomerCommandHandler handler = new DeleteCustomerCommandHandler(loggerMock.Object, customerRepositoryMock.Object);
         //act

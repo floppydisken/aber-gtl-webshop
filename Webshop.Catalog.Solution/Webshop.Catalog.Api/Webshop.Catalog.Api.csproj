@@ -21,6 +21,7 @@
     <ProjectReference Include="..\Webshop.Domain.Command\Webshop.Domain.Common.csproj" />
     <ProjectReference Include="..\Webshop.Catalog.Application\Webshop.Catalog.Application.csproj" />
     <ProjectReference Include="..\Webshop.Catalog.Persistence\Webshop.Catalog.Persistence.csproj" />
+    <ProjectReference Include="..\Webshop.Api\Webshop.Api.csproj" />
   </ItemGroup>
 
 </Project>

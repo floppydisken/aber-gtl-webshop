@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Webshop.Customer.Api.Utilities;
+namespace Webshop.Api.Utilities;
 
 /// <summary>
 /// The responsibility for the envelope is to wrap any result to create a consistent resultset to the clients.

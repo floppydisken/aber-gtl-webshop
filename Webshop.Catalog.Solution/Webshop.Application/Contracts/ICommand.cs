@@ -1,14 +1,8 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Webshop.Domain.Common;
 
-namespace Webshop.Application.Contracts
+namespace Webshop.Application.Contracts;
+
+public interface ICommand : IRequest<Result>
 {
-    public interface ICommand : IRequest<Result>
-    {
-    }
 }
