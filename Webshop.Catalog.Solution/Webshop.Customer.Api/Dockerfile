@@ -10,7 +10,7 @@ WORKDIR /src
 COPY ["Webshop.Customer.Api/Webshop.Customer.Api.csproj", "Webshop.Customer.Api/"]
 COPY ["Webshop.Customer.Application/Webshop.Customer.Application.csproj", "Webshop.Customer.Application/"]
 COPY ["Webshop.Application/Webshop.Application.csproj", "Webshop.Application/"]
-COPY ["Webshop.Domain/Webshop.Domain.csproj", "Webshop.Domain/"]
+COPY ["Webshop.Domain.Common/Webshop.Domain.Common.csproj", "Webshop.Domain.Common/"]
 COPY ["Webshop.Customer.Persistence/Webshop.Customer.Persistence.csproj", "Webshop.Customer.Persistence/"]
 COPY ["Webshop.Data.Persistence/Webshop.Data.Persistence.csproj", "Webshop.Data.Persistence/"]
 RUN dotnet restore "Webshop.Customer.Api/Webshop.Customer.Api.csproj"

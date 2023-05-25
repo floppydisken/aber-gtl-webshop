@@ -15,7 +15,7 @@ namespace Webshop.Customer.Application
     {
         public static IServiceCollection AddCustomerApplicationServices(this IServiceCollection services)
         {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(opts => opts.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IDispatcher, Dispatcher>();
 

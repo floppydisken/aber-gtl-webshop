@@ -34,7 +34,7 @@ namespace Webshop.Catalog.Api
                 .Enrich.FromLogContext()
                 .Enrich.WithProperty("Service", "Catalog.API") //enrich with the tag "service" and the name of this service
                 .WriteTo.Seq(sequrl)
-                .CreateLogger();            
+                .CreateLogger();
         }
 
         public IConfiguration Configuration { get; }
@@ -53,7 +53,7 @@ namespace Webshop.Catalog.Api
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<DataContext, DataContext>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(opts => opts.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             services.AddScoped<IDispatcher>(sp => new Dispatcher(sp.GetService<IMediator>()));
             services.AddCatalogApplicationServices();
