@@ -90,4 +90,31 @@ public class Result<T> : Result
     {
         return from.Value;
     }
+
+    public T Unwrap()
+        => Value;
+
+    public T UnwrapOr(T or)
+    {
+        try
+        {
+            return Value;
+        }
+        catch(InvalidOperationException)
+        {
+            return or;
+        }
+    }
+
+    public T? UnwrapOrDefault()
+    {
+        try
+        {
+            return Value;
+        }
+        catch
+        {
+            return default(T);
+        }
+    }
 }

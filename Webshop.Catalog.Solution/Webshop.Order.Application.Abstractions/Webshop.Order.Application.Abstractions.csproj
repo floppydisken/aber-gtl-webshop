@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Webshop.Application\Webshop.Application.csproj" />
+    <ProjectReference Include="..\Webshop.Order.Domain\Webshop.Order.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
