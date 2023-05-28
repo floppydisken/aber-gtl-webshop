@@ -9,4 +9,5 @@ public class Order : AggregateRoot
     public OrderStatus Status { get; set; } = OrderStatus.Created;
     public Discount Discount { get; set; } = Discount.Zero;
     public required NonEmptyList<OrderLine> OrderLines { get; set; }
+    public int CustomerId { get; set; }
 }

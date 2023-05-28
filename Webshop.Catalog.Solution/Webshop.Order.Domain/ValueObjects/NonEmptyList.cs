@@ -6,7 +6,7 @@ namespace Webshop.Order.Domain.ValueObjects;
 /// <summary>
 /// List that enforces a size of above 1 on initialization, is also comparable with other lists of entities.
 /// </summary>
-public class NonEmptyList<T> : ValueObject
+public class NonEmptyList<T> : ValueObject, IEnumerable<T>
     where T : Entity
 {
     private IList<T> list; 
@@ -28,10 +28,21 @@ public class NonEmptyList<T> : ValueObject
         return new NonEmptyList<T>(initial);
     }
 
+    public IEnumerator<T> GetEnumerator()
+    {
+        return this.list.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return this.list.GetEnumerator();
+    }
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
         return this.list.AsReadOnly().OrderBy(e => e.Id);
     }
+
 }
 
 /// <summary>
