@@ -2,7 +2,9 @@ namespace Webshop.Order.Domain.Dto;
 
 public class ProductDto
 {
-    public string SKU { get; set; }
-    public string Name { get; set; }
+    public string SKU { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
     public decimal UnitPrice { get; set; } = 0;
+
+    public static ProductDto Default => new ();
 }

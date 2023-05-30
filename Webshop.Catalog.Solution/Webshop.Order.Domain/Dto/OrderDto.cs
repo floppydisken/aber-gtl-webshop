@@ -4,5 +4,5 @@ public class OrderDto : EntityDto
 {
     public int CustomerId { get; set; }
     public decimal Discount { get; set; }
-    public IEnumerable<OrderLineDto> OrderLines { get; set; }
+    public IEnumerable<OrderLineDto> OrderLines { get; set; } = Enumerable.Empty<OrderLineDto>();
 }
