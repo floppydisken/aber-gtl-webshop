@@ -5,8 +5,16 @@ namespace Webshop.Order.Domain.ValueObjects;
 
 [ValueObject<int>]
 [Instance("Zero", 0)]
-public partial struct Quantity 
+[Instance("Min", 0)]
+public partial struct Quantity
 {
+    private static readonly int MinValue = 0;
+
     public static Validation Validate(int value) =>
-        value >= 0 ? Validation.Ok : Validation.Invalid(Errors.General.ValueTooSmall(nameof(value), 0).Message.Value);
+        value >= Quantity.MinValue 
+            ? Validation.Ok 
+            : Validation.Invalid(Errors.General.ValueTooSmall(nameof(value), Quantity.MinValue).Message.Value);
+
+    public static Quantity FromOrBoundary(int value)
+        => value < Quantity.MinValue ? Quantity.From(value) : Quantity.Min;
 }

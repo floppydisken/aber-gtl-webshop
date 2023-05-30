@@ -6,26 +6,26 @@ namespace Webshop.Order.Domain.ValueObjects;
 /// <summary>
 /// List that enforces a size of above 1 on initialization, is also comparable with other lists of entities.
 /// </summary>
-public class NonEmptyList<T> : ValueObject, IEnumerable<T>
+public class NonEmptyEntityList<T> : ValueObject, IEnumerable<T>
     where T : Entity
 {
     private IList<T> list; 
 
-    private NonEmptyList(IEnumerable<T> initial) 
+    private NonEmptyEntityList(IEnumerable<T> initial) 
     {
         list = initial.ToList();
     }
 
-    public static Result<NonEmptyList<T>> From(IEnumerable<T> initial)
+    public static Result<NonEmptyEntityList<T>> From(IEnumerable<T> initial)
     {
         if (!initial.Any()) 
         { 
-            return Result.Fail<NonEmptyList<T>>(Errors.General.ValueIsEmpty("The list cannot be empty.")); 
+            return Result.Fail<NonEmptyEntityList<T>>(Errors.General.ValueIsEmpty("The list cannot be empty.")); 
         }
 
         var list = new List<T>(initial.Count());
 
-        return new NonEmptyList<T>(initial);
+        return new NonEmptyEntityList<T>(initial);
     }
 
     public IEnumerator<T> GetEnumerator()
@@ -50,7 +50,7 @@ public class NonEmptyList<T> : ValueObject, IEnumerable<T>
 /// </summary>
 public static class NonEmptyList
 {
-    public static Result<NonEmptyList<T>> From<T>(IEnumerable<T> initial)
+    public static Result<NonEmptyEntityList<T>> From<T>(IEnumerable<T> initial)
         where T : Entity
-        => NonEmptyList<T>.From(initial);
+        => NonEmptyEntityList<T>.From(initial);
 }

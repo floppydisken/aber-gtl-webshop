@@ -77,8 +77,9 @@ services:
   mongo:
     image: mongo:latest
     restart: unless-stopped
+    container_name: mongo
     ports:
-      - 8081:8081
+      - 8086:8081
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
       MONGO_INITDB_ROOT_PASSWORD: secret
