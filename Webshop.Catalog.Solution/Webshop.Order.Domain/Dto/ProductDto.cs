@@ -1,6 +1,6 @@
 namespace Webshop.Order.Domain.Dto;
 
-public class ProductDto
+public class ProductDto : EntityDto
 {
     public string SKU { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;

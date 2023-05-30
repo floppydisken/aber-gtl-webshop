@@ -9,14 +9,14 @@ public class NonEmptyListTests
     [Fact]
     public void ReturnsErrorResultOnEmpty()
     {
-        var result = NonEmptyList.From(new Entity[] { });
+        var result = NonEmptyEntityList.From(new Entity[] { });
         Assert.True(result.Failure);
     }
 
     [Fact]
     public void ReturnsListOnNotEmpty()
     {
-        var result = NonEmptyList.From(new [] { new TestEntity() });
+        var result = NonEmptyEntityList.From(new [] { new TestEntity() });
         Assert.NotNull(result.Unwrap());
     }
 }

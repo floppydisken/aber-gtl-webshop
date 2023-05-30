@@ -13,6 +13,7 @@
     <ProjectReference Include="..\Webshop.Order.Persistence.Abstractions\Webshop.Order.Persistence.Abstractions.csproj" />
     <ProjectReference Include="..\Webshop.Order.Persistence\Webshop.Order.Persistence.csproj" />
     <ProjectReference Include="..\Webshop.Order.Domain\Webshop.Order.Domain.csproj" />
+    <ProjectReference Include="..\Webshop.Catalog.Domain\Webshop.Catalog.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

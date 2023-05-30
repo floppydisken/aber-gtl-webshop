@@ -14,5 +14,7 @@ public class ProductDescription : ValueObject
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return SKU;
+        yield return Name;
+        yield return UnitPrice;
     }
 }

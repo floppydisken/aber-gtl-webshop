@@ -22,7 +22,7 @@ public static class MappingExtensions
     public static Result<Domain.AggregateRoots.Order> ToModel(this Domain.Dto.OrderDto dto)
     {
         var orderLinesResult = VogenToResult(
-            () => NonEmptyList.From(dto.OrderLines.Select(ol => ol.ToModel().Unwrap())),
+            () => NonEmptyEntityList.From(dto.OrderLines.Select(ol => ol.ToModel().Unwrap())),
             Errors.General.ValueIsEmpty(nameof(dto.OrderLines)));
 
         if (orderLinesResult.Failure)
@@ -80,25 +80,39 @@ public static class MappingExtensions
         });
     }
 
-    public static Result<Domain.ValueObjects.ProductDescription> ToModel(this Domain.Dto.ProductDto dto)
+    public static Result<Domain.AggregateRoots.Product> ToModel(this Domain.Dto.ProductDto dto)
     {
         var nameResult = VogenToResult(() => NonEmptyString.From(dto.Name), Errors.General.ValueIsEmpty(nameof(dto.Name)));
         if (nameResult.Failure)
         {
-            return Result.Fail<Domain.ValueObjects.ProductDescription>(nameResult.Error);
+            return Result.Fail<Domain.AggregateRoots.Product>(nameResult.Error);
         }
 
         var skuResult = VogenToResult(() => NonEmptyString.From(dto.SKU), Errors.General.ValueIsEmpty(nameof(dto.SKU)));
         if (skuResult.Failure)
         {
-            return Result.Fail<Domain.ValueObjects.ProductDescription>(skuResult.Error);
+            return Result.Fail<Domain.AggregateRoots.Product>(skuResult.Error);
         }
 
-        return Result.Ok<Domain.ValueObjects.ProductDescription>(new()
+        return Result.Ok<Domain.AggregateRoots.Product>(new()
         {
+            Id = dto.Id,
+            Created = dto.Created,
+            LastModified = dto.LastModified,
+
             Name = nameResult.Unwrap(),
             SKU = skuResult.Unwrap(),
             UnitPrice = Total.From(dto.UnitPrice)
+        });
+    }
+
+    public static Result<Domain.ValueObjects.ProductDescription> ToDescription(this Domain.AggregateRoots.Product model)
+    {
+        return Result.Ok<Domain.ValueObjects.ProductDescription>(new ()
+        {
+            Name = model.Name,
+            SKU = model.SKU,
+            UnitPrice = model.UnitPrice
         });
     }
 

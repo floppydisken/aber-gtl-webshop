@@ -48,7 +48,7 @@ public class NonEmptyEntityList<T> : ValueObject, IEnumerable<T>
 /// <summary>
 /// More ergonomic functions for creation of the NonEmptyList
 /// </summary>
-public static class NonEmptyList
+public static class NonEmptyEntityList
 {
     public static Result<NonEmptyEntityList<T>> From<T>(IEnumerable<T> initial)
         where T : Entity

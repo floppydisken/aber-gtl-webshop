@@ -1,8 +1,10 @@
-using Webshop.Domain.Common;
-using System.Text.Json;
-using Webshop.Order.Domain.Dto;
-using Webshop.Order.Domain;
 using Vogen;
+using System.Text.Json;
+using Webshop.Domain.Common;
+using Webshop.Order.Domain;
+using Webshop.Order.Domain.Dto;
+using Webshop.Order.Domain.ValueObjects;
+using Webshop.Order.Domain.AggregateRoots;
 
 namespace Webshop.Order.Application;
 
@@ -28,25 +30,33 @@ public class CatalogClient
         var result = await request.Content.ReadAsStreamAsync();
         var dto = JsonSerializer.Deserialize<ProductDto>(result);
 
-        try 
+        if (dto is null)
         {
-            var model = dto?.ToModel();
+            return Result.Fail<Product>(Errors.General.NotFound(id));
+        }
 
-            if (model is null)
-            {
-                return Result.Fail(Errors.General.NotFound(id));
-            }
+        try
+        {
+            var model = dto.ToModel();
 
             return Result.Ok(model);
         }
-        catch(ValueObjectValidationException e)
+        catch (ValueObjectValidationException e)
         {
-            return Result.Fail(Errors.General.UnexpectedValue(e.Message));
+            return Result.Fail<Product>(Errors.General.UnexpectedValue(e.Message));
         }
     }
 
-    public Task<Result<IEnumerable<Product>>> GetAllAsync()
+    public async Task<Result<IEnumerable<Product>>> GetAllAsync(IEnumerable<int> ids)
     {
+        var products = new List<Product>();
 
+        foreach(var id in ids)
+        {
+            // TODO: This is incredibly ineffecient, but good enough for this case.
+            products.Add(await GetAsync(id));
+        }
+
+        return Result.Ok<IEnumerable<Product>>(products);
     }
 }

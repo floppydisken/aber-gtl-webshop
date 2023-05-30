@@ -1,6 +1,9 @@
 ﻿using MediatR;
 using Webshop.Domain.Common;
 using Webshop.Order.Application.Abstractions;
+using Webshop.Order.Domain;
+using Webshop.Order.Domain.Entities;
+using Webshop.Order.Domain.ValueObjects;
 using Webshop.Order.Persistence.Abstractions;
 
 namespace Webshop.Order.Application.Features;
@@ -8,27 +11,40 @@ namespace Webshop.Order.Application.Features;
 public class BuyCommandHandler : IBuyCommandHandler
 {
     private readonly IOrderRepository orderRepository;
-    private readonly IMediator mediator;
+    private readonly CatalogClient catalogClient;
 
-    public BuyCommandHandler(IOrderRepository orderRepository, IMediator mediator)
+    public BuyCommandHandler(IOrderRepository orderRepository, CatalogClient catalogClient)
     {
         this.orderRepository = orderRepository;
-        this.mediator = mediator;
+        this.catalogClient = catalogClient;
     }
 
-    public Task<Result> Handle(BuyCommand command, CancellationToken cancellationToken = default)
+    public async Task<Result> Handle(BuyCommand command, CancellationToken cancellationToken = default)
     {
-        var products = 
-        var total = 
+        var products = await catalogClient.GetAllAsync(command.OrderLines.Select(ol => ol.ProductId));
+
+        var total = 0m;
+        foreach(var product in products.Unwrap())
+        {
+            total += product.UnitPrice.Value * command.OrderLines.First(ol => ol.ProductId == product.Id).Quantity;
+        }
+
         await this.orderRepository.CreateAsync(new() 
         {
-            OrderLines = command.OrderLines.Select(ol => 
+            Id = command.OrderId,
+            OrderLines = NonEmptyEntityList.From(command.OrderLines.Select(ol => 
             {
-                new() 
+                return new OrderLine() 
                 {
-                    ol.Quantity
-                }
-            })
+                    Total = Total.FromOrBoundary(total),
+                    Product = products.Unwrap().First(p => p.Id == ol.ProductId).ToDescription(),
+                    Quantity = Quantity.From(ol.Quantity),
+                };
+            })),
+            Discount = Discount.Zero,
+            CustomerId = command.CustomerId,
         });
+
+        return Result.Ok();
     }
 }

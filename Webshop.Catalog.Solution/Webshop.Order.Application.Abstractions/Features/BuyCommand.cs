@@ -15,6 +15,7 @@ public class BuyOrderLine
 public class BuyCommand : ICommand
 {
     public required int OrderId { get; set; }
+    public required int CustomerId { get; set; }
     public IEnumerable<BuyOrderLine> OrderLines { get; set; } =
         Enumerable.Empty<BuyOrderLine>();
     public string? VoucherCode { get; set; }
