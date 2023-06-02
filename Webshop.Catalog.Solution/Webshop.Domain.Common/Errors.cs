@@ -10,6 +10,7 @@ public static class Errors
 {
     public static class General
     {
+        public static Error ValueIsNull(string valueName) => new Error("value.is.null", $"Value '{valueName}' is null");
         public static Error UnspecifiedError(string message) => new Error("unspecified.error", message);
         public static Error NotFound<T>(T id) where T : struct => new Error("entity.not.found", $"Could not find entity with ID {id}.", statusCode: 404);
         public static Error ValueIsRequired(string valueName) => new Error("value.is.required", $"Value '{valueName}' is required.");

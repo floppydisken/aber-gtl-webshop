@@ -30,7 +30,7 @@ public class PaymentClient : IPaymentClient
 
         if (deserialized is null)
         {
-            return Result.Fail<Transaction>(Errors.General.UnexpectedValue(nameof(deserialized)));
+            return Result.Fail<Transaction>(Errors.General.ValueIsNull(nameof(deserialized)));
         }
 
         return Result.Ok<Transaction>(deserialized);
