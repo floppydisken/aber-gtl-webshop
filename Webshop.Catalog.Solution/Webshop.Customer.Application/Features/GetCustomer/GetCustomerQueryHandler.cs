@@ -37,7 +37,7 @@ namespace Webshop.Customer.Application.Features.GetCustomer
         {
             try
             {
-                Domain.AggregateRoots.Customer customer = await this.customerRepository.GetById(
+                Domain.AggregateRoots.Customer customer = await this.customerRepository.GetByIdAsync(
                     query.CustomerId
                 );
                 return this.mapper.Map<CustomerDto>(customer);

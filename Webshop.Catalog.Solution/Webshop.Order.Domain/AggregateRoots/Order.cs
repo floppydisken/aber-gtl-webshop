@@ -6,8 +6,10 @@ namespace Webshop.Order.Domain.AggregateRoots;
 
 public class Order : AggregateRoot
 { 
+    public Total Total { get; set; } = Total.Zero;
     public OrderStatus Status { get; set; } = OrderStatus.Created;
     public Discount Discount { get; set; } = Discount.Zero;
     public required NonEmptyEntityList<OrderLine> OrderLines { get; set; }
     public int CustomerId { get; set; }
+    public Guid? TransactionId { get; set; }
 }

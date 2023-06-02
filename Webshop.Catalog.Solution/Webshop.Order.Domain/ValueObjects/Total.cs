@@ -17,4 +17,7 @@ public partial struct Total
 
     public static Total FromOrBoundary(decimal amount)
         => amount > Total.MinValue ? Total.From(amount) : Total.Min;
+
+    public int ToMinorUnit()
+        => Convert.ToInt32(this.Value * 100);
 }

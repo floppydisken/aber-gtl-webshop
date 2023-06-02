@@ -58,7 +58,11 @@ public static class MappingExtensions
     {
         return Result.Ok<Domain.Entities.OrderLine>(new()
         {
-            Product = dto.Product.ToModel(),
+            Product = dto.Product
+                .ToModel()
+                .Unwrap()
+                .ToDescription()
+                .Unwrap(),
             Created = dto.Created,
             LastModified = dto.LastModified,
             Id = dto.Id,
@@ -108,7 +112,7 @@ public static class MappingExtensions
 
     public static Result<Domain.ValueObjects.ProductDescription> ToDescription(this Domain.AggregateRoots.Product model)
     {
-        return Result.Ok<Domain.ValueObjects.ProductDescription>(new ()
+        return Result.Ok<Domain.ValueObjects.ProductDescription>(new()
         {
             Name = model.Name,
             SKU = model.SKU,

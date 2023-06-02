@@ -28,9 +28,19 @@ public class Result
         return new Result(false, error);
     }
 
+    public static Result Fail(string error)
+    {
+        return new Result(false, new Error("error", error));
+    }
+
     public static Result<T> Fail<T>(Error error)
     {
         return new Result<T>(default, false, error);
+    }
+
+    public static Result<T> Fail<T>(string error)
+    {
+        return new Result<T>(default, false, new Error("error", error));
     }
 
     public static Result Ok()

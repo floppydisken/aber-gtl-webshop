@@ -71,7 +71,7 @@ namespace Webshop.Catalog.Persistence
             }
         }
 
-        public async Task<Product> GetById(int id)
+        public async Task<Product> GetByIdAsync(int id)
         {
             using (var connection = dataContext.CreateConnection())
             {

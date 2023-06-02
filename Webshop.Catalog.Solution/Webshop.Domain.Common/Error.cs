@@ -23,7 +23,7 @@ public class Error : ValueObject
     public ErrorMessage Message { get; }
     public ErrorStatusCode StatusCode { get; }
 
-    internal Error(string code, string message, int statusCode = 400)
+    public Error(string code, string message, int statusCode = 400)
     {
         Code = ErrorCode.From(code);
         Message = ErrorMessage.From(message);

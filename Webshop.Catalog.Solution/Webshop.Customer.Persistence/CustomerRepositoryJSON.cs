@@ -49,7 +49,7 @@ public class CustomerRepositoryJSON : BaseRepository, ICustomerRepository
         return await Task.Run(() => this.customers);
     }
 
-    public async Task<Domain.AggregateRoots.Customer> GetById(int id)
+    public async Task<Domain.AggregateRoots.Customer> GetByIdAsync(int id)
     {
         return await Task.Run(() => this.customers.FirstOrDefault(x => x.Id == id));
     }

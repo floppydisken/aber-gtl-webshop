@@ -13,6 +13,7 @@ public class CatalogClientOptions
     public required Uri Uri { get; set; }
 }
 
+// TODO: Move to own dll or into API of Catalog API
 public class CatalogClient
 {
     private readonly HttpClient client;
@@ -51,9 +52,10 @@ public class CatalogClient
     {
         var products = new List<Product>();
 
-        foreach(var id in ids)
+        foreach (var id in ids)
         {
             // TODO: This is incredibly ineffecient, but good enough for this case.
+            //       A slow version of O(n) complexity. Yay.
             products.Add(await GetAsync(id));
         }
 

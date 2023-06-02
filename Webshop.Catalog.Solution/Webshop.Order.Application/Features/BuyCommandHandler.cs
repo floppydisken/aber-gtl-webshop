@@ -5,6 +5,7 @@ using Webshop.Order.Domain;
 using Webshop.Order.Domain.Entities;
 using Webshop.Order.Domain.ValueObjects;
 using Webshop.Order.Persistence.Abstractions;
+using Webshop.Payment.Client;
 
 namespace Webshop.Order.Application.Features;
 
@@ -12,11 +13,16 @@ public class BuyCommandHandler : IBuyCommandHandler
 {
     private readonly IOrderRepository orderRepository;
     private readonly CatalogClient catalogClient;
+    private readonly IPaymentClient paymentClient;
 
-    public BuyCommandHandler(IOrderRepository orderRepository, CatalogClient catalogClient)
-    {
+    public BuyCommandHandler(
+        IOrderRepository orderRepository, 
+        CatalogClient catalogClient, 
+        IPaymentClient paymentClient
+    ) {
         this.orderRepository = orderRepository;
         this.catalogClient = catalogClient;
+        this.paymentClient = paymentClient;
     }
 
     public async Task<Result> Handle(BuyCommand command, CancellationToken cancellationToken = default)

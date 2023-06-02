@@ -25,7 +25,7 @@ public class OrderRepository : IOrderRepository
     public async Task<IEnumerable<Domain.AggregateRoots.Order>> GetAll()
         => await this.collection.Aggregate().ToListAsync();
 
-    public async Task<Domain.AggregateRoots.Order> GetById(int id)
+    public async Task<Domain.AggregateRoots.Order> GetByIdAsync(int id)
         => await this.collection
             .Find<Domain.AggregateRoots.Order>(o => o.Id == id)
             .FirstOrDefaultAsync();

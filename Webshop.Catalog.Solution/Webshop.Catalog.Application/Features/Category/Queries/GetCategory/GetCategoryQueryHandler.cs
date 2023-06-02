@@ -29,7 +29,7 @@ namespace Webshop.Category.Application.Features.Category.Queries.GetCategory
         {
             try
             {
-                var queryResult = await this.categoryRepository.GetById(query.CategoryId);
+                var queryResult = await this.categoryRepository.GetByIdAsync(query.CategoryId);
                 var categoryDto = this.mapper.Map<CategoryDto>(queryResult);
                 return categoryDto;
             }

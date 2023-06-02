@@ -7,9 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Webshop.Order.Application;
 using Serilog;
 
-namespace PSU_PaymentGateway
+namespace Webshop.Payment.Api
 {
     public class Startup
     {
@@ -37,6 +38,7 @@ namespace PSU_PaymentGateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddOrderServices();
             services
                 .AddSwaggerGen(c =>
                 {

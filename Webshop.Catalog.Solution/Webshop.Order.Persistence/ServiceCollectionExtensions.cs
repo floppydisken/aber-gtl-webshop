@@ -7,9 +7,10 @@ namespace Webshop.Order.Persistence;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddOrderMongoPersistence(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddOrderMongoPersistence(this IServiceCollection services)
     {
-        services.AddScoped<IMongoClient>(opts => new MongoClient(new MongoUrl(configuration["Mongo:ConnectionString"])));
+        services.AddScoped<IMongoClient>(provider => new MongoClient(
+            new MongoUrl(provider.GetRequiredService<IConfiguration>()["Mongo:ConnectionString"])));
         services.AddScoped<IOrderRepository, OrderRepository>();
 
         return services;

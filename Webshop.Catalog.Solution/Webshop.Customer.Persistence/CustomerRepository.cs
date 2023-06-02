@@ -37,7 +37,7 @@ public class CustomerRepository : BaseRepository, ICustomerRepository
         }
     }
 
-    public async Task<Domain.AggregateRoots.Customer> GetById(int id)
+    public async Task<Domain.AggregateRoots.Customer> GetByIdAsync(int id)
     {
         using (var connection = dataContext.CreateConnection())
         {

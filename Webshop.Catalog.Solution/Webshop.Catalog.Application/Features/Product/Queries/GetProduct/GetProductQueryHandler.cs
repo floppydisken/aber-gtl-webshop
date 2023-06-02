@@ -29,7 +29,7 @@ namespace Webshop.Catalog.Application.Features.Product.Queries.GetProduct
         {
             try
             {
-                var product = await this.productRepository.GetById(query.ProductId);
+                var product = await this.productRepository.GetByIdAsync(query.ProductId);
                 return this.mapper.Map<ProductDto>(product);
             }
             catch(Exception ex)
