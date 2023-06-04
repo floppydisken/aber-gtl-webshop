@@ -1,6 +1,5 @@
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
 using Webshop.Order.Persistence;
 using Webshop.Payment.Client;
 
@@ -14,8 +13,14 @@ public static class ServiceCollectionExtensions
         services.AddOrderMongoPersistence();
 
         services.AddHttpClient();
-        services.AddScoped<CatalogClient>();
-
+        services.AddScoped<CatalogClient>(provider =>
+        {
+            return new CatalogClient(provider.GetRequiredService<HttpClient>(), new());
+        });
+        services.AddScoped<CustomerClient>(provider =>
+        {
+            return new CustomerClient(provider.GetRequiredService<HttpClient>(), new());
+        });
         services.AddPaymentClient();
 
         return services;

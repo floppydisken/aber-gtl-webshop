@@ -20,7 +20,7 @@ public partial struct Discount
             : Validation.Ok;
 
     public static Discount FromOrBoundary(decimal value)
-    {
-        return value > MaxValue ? Discount.Max : value < MinValue ? Discount.Min : Discount.From(value);
-    }
+        => value > MaxValue ? Max : value < MinValue ? Min : From(value);
+
+    public decimal Pct => Value / 100;
 }

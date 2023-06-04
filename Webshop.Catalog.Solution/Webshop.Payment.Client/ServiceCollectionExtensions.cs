@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPaymentClient, PaymentClient>(provider =>
         {
             var config = provider.GetRequiredService<IConfiguration>();
-            var uri = new Uri(config["Settings:Payments:Uri"]);
+            var uri = new Uri(config["Payments:Uri"]);
             var client = provider.GetRequiredService<HttpClient>();
 
             return new PaymentClient(client, new() { PaymentUri = uri });

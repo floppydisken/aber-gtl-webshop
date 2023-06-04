@@ -1,5 +1,7 @@
+using System.Runtime.CompilerServices;
 using Vogen;
 using Webshop.Domain.Common;
+using Webshop.Order.Domain.ValueObjects;
 
 namespace Webshop.Order.Domain;
 
@@ -20,4 +22,15 @@ public partial struct Total
 
     public int ToMinorUnit()
         => Convert.ToInt32(this.Value * 100);
+    
+    public static Total operator +(Total lhs, Total rhs) => From(lhs.Value + rhs.Value);
+    public static Total operator -(Total lhs, Total rhs) => From(lhs.Value - rhs.Value);
+    public static Total operator +(decimal lhs, Total rhs) => From(lhs + rhs.Value);
+    public static Total operator +(Total lhs, decimal rhs) => From(lhs.Value + rhs);
+    public static Total operator *(Total lhs, decimal rhs) => From(lhs.Value * rhs);
+    public static Total operator *(Total lhs, int rhs) => From(lhs.Value * rhs);
+    public static Total operator *(Total lhs, Quantity quantity) => From(lhs.Value * quantity.Value);
+    public static Total operator /(Total lhs, int rhs) => From(lhs.Value / rhs);
+    public static Total operator /(Total lhs, decimal rhs) => From(lhs.Value / rhs);
+    public static Total operator /(Total lhs, Total rhs) => From(lhs.Value / rhs.Value);
 }

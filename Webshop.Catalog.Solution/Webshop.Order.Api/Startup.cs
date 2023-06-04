@@ -74,11 +74,8 @@ public class Startup
                     "Order Gateway v1"));
 
         app.UseHttpsRedirection();
-
         app.UseRouting();
-
         app.UseAuthorization();
-
         app
             .UseEndpoints(endpoints =>
             {

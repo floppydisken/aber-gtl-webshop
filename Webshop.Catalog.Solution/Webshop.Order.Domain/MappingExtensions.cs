@@ -1,6 +1,5 @@
 using Vogen;
 using Webshop.Domain.Common;
-using Webshop.Order.Domain.Entities;
 using Webshop.Order.Domain.ValueObjects;
 
 namespace Webshop.Order.Domain;
@@ -19,7 +18,7 @@ public static class MappingExtensions
         }
     }
 
-    public static Result<Domain.AggregateRoots.Order> ToModel(this Domain.Dto.OrderDto dto)
+    public static Result<AggregateRoots.Order> ToModel(this Dto.OrderDto dto)
     {
         var orderLinesResult = VogenToResult(
             () => NonEmptyEntityList.From(dto.OrderLines.Select(ol => ol.ToModel().Unwrap())),
@@ -27,10 +26,10 @@ public static class MappingExtensions
 
         if (orderLinesResult.Failure)
         {
-            return Result.Fail<Domain.AggregateRoots.Order>(orderLinesResult.Error);
+            return Result.Fail<AggregateRoots.Order>(orderLinesResult.Error);
         }
 
-        return Result.Ok<Domain.AggregateRoots.Order>(new()
+        return Result.Ok<AggregateRoots.Order>(new()
         {
             OrderLines = orderLinesResult.Unwrap(),
             Discount = Discount.FromOrBoundary(dto.Discount),
@@ -41,10 +40,10 @@ public static class MappingExtensions
         });
     }
 
-    public static Result<Domain.Dto.OrderDto> ToDto(this Domain.AggregateRoots.Order model)
+    public static Result<Dto.OrderDto> ToDto(this AggregateRoots.Order model)
     {
 
-        return Result.Ok<Domain.Dto.OrderDto>(new()
+        return Result.Ok<Dto.OrderDto>(new()
         {
             Created = model.Created,
             LastModified = model.LastModified,
@@ -54,9 +53,9 @@ public static class MappingExtensions
         });
     }
 
-    public static Result<Domain.Entities.OrderLine> ToModel(this Domain.Dto.OrderLineDto dto)
+    public static Result<Entities.OrderLine> ToModel(this Dto.OrderLineDto dto)
     {
-        return Result.Ok<Domain.Entities.OrderLine>(new()
+        return Result.Ok<Entities.OrderLine>(new()
         {
             Product = dto.Product
                 .ToModel()
@@ -67,13 +66,12 @@ public static class MappingExtensions
             LastModified = dto.LastModified,
             Id = dto.Id,
             Quantity = Quantity.FromOrBoundary(dto.Quantity),
-            Total = Total.FromOrBoundary(dto.Total)
         });
     }
 
-    public static Result<Domain.Dto.OrderLineDto> ToDto(this Domain.Entities.OrderLine dto)
+    public static Result<Dto.OrderLineDto> ToDto(this Entities.OrderLine dto)
     {
-        return Result.Ok<Domain.Dto.OrderLineDto>(new()
+        return Result.Ok<Dto.OrderLineDto>(new()
         {
             Created = dto.Created,
             LastModified = dto.LastModified,
@@ -84,21 +82,21 @@ public static class MappingExtensions
         });
     }
 
-    public static Result<Domain.AggregateRoots.Product> ToModel(this Domain.Dto.ProductDto dto)
+    public static Result<AggregateRoots.Product> ToModel(this Dto.ProductDto dto)
     {
         var nameResult = VogenToResult(() => NonEmptyString.From(dto.Name), Errors.General.ValueIsEmpty(nameof(dto.Name)));
         if (nameResult.Failure)
         {
-            return Result.Fail<Domain.AggregateRoots.Product>(nameResult.Error);
+            return Result.Fail<AggregateRoots.Product>(nameResult.Error);
         }
 
         var skuResult = VogenToResult(() => NonEmptyString.From(dto.SKU), Errors.General.ValueIsEmpty(nameof(dto.SKU)));
         if (skuResult.Failure)
         {
-            return Result.Fail<Domain.AggregateRoots.Product>(skuResult.Error);
+            return Result.Fail<AggregateRoots.Product>(skuResult.Error);
         }
 
-        return Result.Ok<Domain.AggregateRoots.Product>(new()
+        return Result.Ok<AggregateRoots.Product>(new()
         {
             Id = dto.Id,
             Created = dto.Created,
@@ -110,9 +108,9 @@ public static class MappingExtensions
         });
     }
 
-    public static Result<Domain.ValueObjects.ProductDescription> ToDescription(this Domain.AggregateRoots.Product model)
+    public static Result<ValueObjects.ProductDescription> ToDescription(this AggregateRoots.Product model)
     {
-        return Result.Ok<Domain.ValueObjects.ProductDescription>(new()
+        return Result.Ok<ValueObjects.ProductDescription>(new()
         {
             Name = model.Name,
             SKU = model.SKU,
@@ -120,9 +118,9 @@ public static class MappingExtensions
         });
     }
 
-    public static Result<Domain.Dto.ProductDto> ToDto(this Domain.ValueObjects.ProductDescription model)
+    public static Result<Dto.ProductDto> ToDto(this ValueObjects.ProductDescription model)
     {
-        return Result.Ok<Domain.Dto.ProductDto>(new()
+        return Result.Ok<Dto.ProductDto>(new()
         {
             Name = model.Name.Value,
             SKU = model.SKU.Value,
@@ -130,9 +128,9 @@ public static class MappingExtensions
         });
     }
 
-    public static Result<Domain.AggregateRoots.Voucher> ToModel(this Domain.Dto.VoucherDto dto)
+    public static Result<AggregateRoots.Voucher> ToModel(this Dto.VoucherDto dto)
     {
-        return Result.Ok<Domain.AggregateRoots.Voucher>(new()
+        return Result.Ok<AggregateRoots.Voucher>(new()
         {
             Id = dto.Id,
             Created = dto.Created,
@@ -142,9 +140,9 @@ public static class MappingExtensions
         });
     }
 
-    public static Result<Domain.Dto.VoucherDto> ToDto(this Domain.AggregateRoots.Voucher model)
+    public static Result<Dto.VoucherDto> ToDto(this AggregateRoots.Voucher model)
     {
-        return Result.Ok<Domain.Dto.VoucherDto>(new()
+        return Result.Ok<Dto.VoucherDto>(new()
         {
             Id = model.Id,
             Created = model.Created,

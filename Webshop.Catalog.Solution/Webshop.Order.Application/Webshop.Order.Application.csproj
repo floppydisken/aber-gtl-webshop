@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Webshop.Customer.Application\Webshop.Customer.Application.csproj" />
+    <ProjectReference Include="..\Webshop.Customer.Domain\Webshop.Customer.Domain.csproj" />
     <ProjectReference Include="..\Webshop.Order.Application.Abstractions\Webshop.Order.Application.Abstractions.csproj" />
     <ProjectReference Include="..\Webshop.Application\Webshop.Application.csproj" />
     <ProjectReference Include="..\Webshop.Order.Persistence.Abstractions\Webshop.Order.Persistence.Abstractions.csproj" />

@@ -18,6 +18,10 @@ public class Program
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
+            .UseDefaultServiceProvider((ctx, opts) =>
+            {
+                opts.ValidateOnBuild = true;
+            })
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseUrls("http://0.0.0.0:5000");

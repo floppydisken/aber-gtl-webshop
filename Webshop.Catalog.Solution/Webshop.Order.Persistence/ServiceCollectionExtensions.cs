@@ -9,8 +9,12 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddOrderMongoPersistence(this IServiceCollection services)
     {
-        services.AddScoped<IMongoClient>(provider => new MongoClient(
-            new MongoUrl(provider.GetRequiredService<IConfiguration>()["Mongo:ConnectionString"])));
+        services.AddScoped<IMongoClient>(provider =>
+        {
+            var config = provider.GetRequiredService<IConfiguration>();
+            var connString = config["Mongo:ConnectionString"];
+            return new MongoClient(new MongoUrl(connString));
+        });
         services.AddScoped<IOrderRepository, OrderRepository>();
 
         return services;

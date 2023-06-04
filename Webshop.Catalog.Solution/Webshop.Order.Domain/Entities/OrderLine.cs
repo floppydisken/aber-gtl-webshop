@@ -7,5 +7,5 @@ public class OrderLine : Entity
 {
     public required ProductDescription Product { get; set; }
     public Quantity Quantity { get; set; }
-    public Total Total { get; set; }
+    public Total Total => Product.UnitPrice * Quantity;
 }

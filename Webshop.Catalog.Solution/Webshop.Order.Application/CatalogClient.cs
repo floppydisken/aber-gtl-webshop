@@ -10,7 +10,7 @@ namespace Webshop.Order.Application;
 
 public class CatalogClientOptions
 {
-    public required Uri Uri { get; set; }
+    public Uri Uri { get; set; } = new("http://0.0.0.0:8084");
 }
 
 // TODO: Move to own dll or into API of Catalog API
@@ -27,7 +27,7 @@ public class CatalogClient
 
     public async Task<Result<Product>> GetAsync(int id)
     {
-        var request = await client.GetAsync($"{options.Uri}?id={id}");
+        var request = await client.GetAsync($"{options.Uri}/api/products/{id}");
         var result = await request.Content.ReadAsStreamAsync();
         var dto = JsonSerializer.Deserialize<ProductDto>(result);
 

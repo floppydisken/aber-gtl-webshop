@@ -14,8 +14,8 @@ public class BuyOrderLine
 
 public class BuyCommand : ICommand
 {
-    public required int OrderId { get; set; }
     public required int CustomerId { get; set; }
+    public int OrderId { get; set; } = new Random().Next();
     public Guid TransactionId { get; set; }
     public IEnumerable<BuyOrderLine> OrderLines { get; set; } =
         Enumerable.Empty<BuyOrderLine>();

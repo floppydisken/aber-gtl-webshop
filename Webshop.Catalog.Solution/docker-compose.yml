@@ -70,16 +70,16 @@ services:
     networks:
       - backtier
 
-  orderapi:
-    container_name: webshop.order
-    build: 
-      context: .
-      dockerfile: ./Webshop.Order.Api/Dockerfile
-    restart: unless-stopped
-    ports:
-      - 8086:5000
-    networks:
-      - backtier
+  # orderapi:
+  #   container_name: webshop.order
+  #   build: 
+  #     context: .
+  #     dockerfile: ./Webshop.Order.Api/Dockerfile
+  #   restart: unless-stopped
+  #   ports:
+  #     - 8086:5000
+  #   networks:
+  #     - backtier
 
   sqlexpress:
     container_name: webshopdatabase

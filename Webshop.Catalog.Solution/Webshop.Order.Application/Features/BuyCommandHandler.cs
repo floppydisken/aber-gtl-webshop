@@ -42,7 +42,6 @@ public class BuyCommandHandler : IBuyCommandHandler
             {
                 return new OrderLine() 
                 {
-                    Total = Total.FromOrBoundary(total),
                     Product = products.Unwrap().First(p => p.Id == ol.ProductId).ToDescription(),
                     Quantity = Quantity.From(ol.Quantity),
                 };

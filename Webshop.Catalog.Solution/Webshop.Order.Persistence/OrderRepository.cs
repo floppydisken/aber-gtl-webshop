@@ -7,10 +7,10 @@ namespace Webshop.Order.Persistence;
 
 public class OrderRepository : IOrderRepository
 {
-    private readonly MongoClient client;
+    private readonly IMongoClient client;
     private readonly IMongoCollection<Domain.Dto.OrderDto> collection;
 
-    public OrderRepository(MongoClient client)
+    public OrderRepository(IMongoClient client)
     {
         this.client = client;
         this.collection = client
