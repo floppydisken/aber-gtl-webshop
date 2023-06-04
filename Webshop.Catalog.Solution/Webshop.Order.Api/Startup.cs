@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -47,6 +48,10 @@ public class Startup
                         Version = "v1"
                     });
             });
+        
+        services
+            .AddHealthChecks()
+            .AddCheck("health", () => HealthCheckResult.Healthy());
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +83,7 @@ public class Startup
             .UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/api/health");
             });
 
         loggerFactory.AddSerilog();

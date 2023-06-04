@@ -3,14 +3,17 @@ services:
   help:
     # SeQ is a framework for logging of exceptions etc
     container_name: webshophelp
-    image: brhv/webshophelp
+    build: 
+      context: .
+      dockerfile: ./Webshop.Help/Dockerfile
     restart: unless-stopped
     ports:
-      - 8000:80
+      - 8000:5000
     networks:
       - backtier
     environment:
       - SERVER=webshopdatabase
+
   seq:
     # SeQ is a framework for logging of exceptions etc
     container_name: SeQ
@@ -23,6 +26,7 @@ services:
       - backtier
     environment:
       - ACCEPT_EULA=Y
+
   smtp4dev:
     # development time email server and client, easy to test sending emails
     container_name: smtp4dev
@@ -32,35 +36,52 @@ services:
       - 26:25
     networks:
       - backtier
+
   paymentapi:
-    # the payment API
     container_name: webshop.payment
-    image: brhv/webshoppaymentapi
+    build: 
+      context: .
+      dockerfile: ./Webshop.Payment.Api/Dockerfile
     restart: unless-stopped
     ports:
-      - 8083:80
+      - 8083:5000
     networks:
       - backtier
+
   catalogapi:
-    # the catalog API
     container_name: webshop.catalog
-    image: brhv/webshopcatalogapi
+    build: 
+      context: .
+      dockerfile: ./Webshop.Catalog.Api/Dockerfile
     restart: unless-stopped
     ports:
-      - 8084:80
+      - 8084:5000
     networks:
       - backtier
+
   customerapi:
-    # the customer API
     container_name: webshop.customer
-    image: brhv/webshopcustomerapi
+    build: 
+      context: .
+      dockerfile: ./Webshop.Customer.Api/Dockerfile
     restart: unless-stopped
     ports:
-      - 8085:80
+      - 8085:5000
     networks:
       - backtier
+
+  orderapi:
+    container_name: webshop.order
+    build: 
+      context: .
+      dockerfile: ./Webshop.Order.Api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8086:5000
+    networks:
+      - backtier
+
   sqlexpress:
-    #the sql server
     container_name: webshopdatabase
     image: mcr.microsoft.com/mssql/server:latest
     restart: unless-stopped
@@ -90,6 +111,8 @@ services:
   mongo-express:
     image: mongo-express
     container_name: mongoexpress
+    depends_on: 
+      - mongo
     restart: always
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root

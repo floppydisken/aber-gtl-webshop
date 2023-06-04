@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Webshop.Api;
 using Webshop.Order.Application.Abstractions;
 
-namespace Webshop.Order.Api;
+namespace Webshop.Order.Api.Controllers;
 
 [Route("api/orders")]
 public class OrderController : WebshopController
