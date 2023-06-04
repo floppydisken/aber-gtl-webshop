@@ -16,6 +16,7 @@ public static class ServiceCollectionExtensions
             return new MongoClient(new MongoUrl(connString));
         });
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IVoucherRepository, VoucherRepository>();
 
         return services;
     }

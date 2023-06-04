@@ -1,0 +1,48 @@
+using MongoDB.Driver;
+using Webshop.Order.Domain;
+using Webshop.Order.Domain.AggregateRoots;
+using Webshop.Order.Persistence.Abstractions;
+
+namespace Webshop.Order.Persistence;
+
+public class VoucherRepository : IVoucherRepository
+{
+    private readonly IMongoCollection<Domain.Dto.VoucherDto> collection;
+
+    public VoucherRepository(IMongoClient client)
+    {
+        this.collection = client
+            .GetDatabase("orders")
+            .GetCollection<Domain.Dto.VoucherDto>("vouchers");
+    }
+
+    public async Task CreateAsync(Voucher entity)
+        => await collection.InsertOneAsync(entity.ToDto());
+
+    public async Task DeleteAsync(int id)
+        => await collection.FindOneAndDeleteAsync(o => o.Id == id);
+
+    public async Task<IEnumerable<Voucher>> GetAll()
+        => (await collection
+                .Aggregate()
+                .ToListAsync())
+            .Select(o => o.ToModel().Unwrap());
+
+    public async Task<Voucher> GetByIdAsync(int id)
+        => (await collection
+                .Find(o => o.Id == id) 
+                .FirstOrDefaultAsync()) 
+            .ToModel()
+            .Unwrap();
+
+    public async Task UpdateAsync(Voucher entity)
+        => await collection
+            .FindOneAndReplaceAsync(o => o.Id == entity.Id, entity.ToDto());
+
+    public async Task<Voucher> GetByCodeAsync(string code)
+        => (await collection
+                .Find(v => v.Code == code)
+                .FirstOrDefaultAsync())
+            .ToModel()
+            .Unwrap();
+}
