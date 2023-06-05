@@ -15,6 +15,11 @@ jobs:
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+          
+      - name: disable and stop mono-xsp4.service
+        run: |
+          sudo systemctl stop mono-xsp4.service || true
+          sudo systemctl disable mono-xsp4.service || true
 
       - name: Start docker-compose
         run: |
