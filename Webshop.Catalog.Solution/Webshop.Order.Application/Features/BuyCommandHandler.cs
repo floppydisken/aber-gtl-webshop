@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.IO.Pipelines;
+using MediatR;
 using Webshop.Application.Contracts;
 using Webshop.Domain.Common;
 using Webshop.Order.Application.Abstractions;
@@ -37,12 +38,14 @@ public class BuyCommandHandler : IBuyCommandHandler
     {
         var products = await catalogClient.GetAllAsync(command.OrderLines.Select(ol => ol.ProductId));
 
-        Voucher? voucher = null;
-        if (command.VoucherCode is not null && command.VoucherCode != VoucherCode.StoreWide)
-        {
-            // TODO: Handle try catch
-            voucher = await voucherRepository.GetByCodeAsync(command.VoucherCode);
-        }
+        var voucherCodeResult = FluentVogen
+            .UseMapper(() => VoucherCode.From(command.VoucherCode))
+            .UseError(e => Errors.General.ValueIsInvalid(nameof(command.VoucherCode), e.Message))
+            .Run();
+
+        var voucher = voucherCodeResult.Success 
+            ? await voucherRepository.GetByCodeAsync(voucherCodeResult) 
+            : default;
 
         var storeWideDiscount = (await dispatcher.Dispatch(new GetStoreWideDiscountQuery()))
             .UnwrapOr(Discount.Zero);

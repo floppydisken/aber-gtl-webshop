@@ -1,6 +1,7 @@
 using MongoDB.Driver;
 using Webshop.Order.Domain;
 using Webshop.Order.Domain.AggregateRoots;
+using Webshop.Order.Domain.ValueObjects;
 using Webshop.Order.Persistence.Abstractions;
 
 namespace Webshop.Order.Persistence;
@@ -51,13 +52,13 @@ public class VoucherRepository : IVoucherRepository
         => await collection
             .FindOneAndReplaceAsync(o => o.Id == entity.Id, entity.ToDto());
 
-    public async Task<Voucher?> GetByCodeAsync(string code)
+    public async Task<Voucher?> GetByCodeAsync(VoucherCode code)
         => (await collection
-                .Find(v => v.Code == code)
+                .Find(v => v.Code == code.Value)
                 .FirstOrDefaultAsync())
             .ToModel()
             .UnwrapOrDefault();
 
-    public async Task DeleteByCodeAsync(string code)
-        => await collection.DeleteOneAsync(v => v.Code == code);
+    public async Task DeleteByCodeAsync(VoucherCode code)
+        => await collection.DeleteOneAsync(v => v.Code == code.Value);
 }
