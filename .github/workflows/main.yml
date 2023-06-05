@@ -19,7 +19,9 @@ jobs:
       - name: Start docker-compose
         run: |
           cd ./Webshop.Catalog.Solution/ && 
-          docker-compose up --wait 
+          docker-compose up -d && 
+          timeout 60s sh -c 'until docker ps | grep webshopcatalogsolution-orderapi | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done'
+
       
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
