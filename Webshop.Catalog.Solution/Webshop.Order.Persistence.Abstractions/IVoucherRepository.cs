@@ -6,4 +6,5 @@ namespace Webshop.Order.Persistence.Abstractions;
 public interface IVoucherRepository : IRepository<Voucher>
 {
     public Task<Voucher?> GetByCodeAsync(string code);
+    public Task DeleteByCodeAsync(string code);
 }

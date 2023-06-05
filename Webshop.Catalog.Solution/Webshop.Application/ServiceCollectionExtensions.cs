@@ -5,9 +5,9 @@ using Webshop.Application.Contracts;
 
 namespace Webshop.Application;
 
-public static class ApplicationServiceRegistration
+public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static IServiceCollection AddDispatcher(this IServiceCollection services)
     {
         services.AddMediatR(opts => opts.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddScoped<IDispatcher, Dispatcher>();

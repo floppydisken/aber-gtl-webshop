@@ -11,13 +11,25 @@ public class VoucherRepository : IVoucherRepository
 
     public VoucherRepository(IMongoClient client)
     {
-        this.collection = client
+        collection = client
             .GetDatabase("orders")
             .GetCollection<Domain.Dto.VoucherDto>("vouchers");
     }
 
     public async Task CreateAsync(Voucher entity)
-        => await collection.InsertOneAsync(entity.ToDto());
+    {
+        var existing = await collection
+            .Find(v => v.Code == entity.Code)
+            .FirstOrDefaultAsync();
+
+        if (existing is not null)
+        {
+            await UpdateAsync(entity);
+            return;
+        }
+        
+        await collection.InsertOneAsync(entity.ToDto());
+    }
 
     public async Task DeleteAsync(int id)
         => await collection.FindOneAndDeleteAsync(o => o.Id == id);
@@ -45,4 +57,7 @@ public class VoucherRepository : IVoucherRepository
                 .FirstOrDefaultAsync())
             .ToModel()
             .UnwrapOrDefault();
+
+    public async Task DeleteByCodeAsync(string code)
+        => await collection.DeleteOneAsync(v => v.Code == code);
 }
