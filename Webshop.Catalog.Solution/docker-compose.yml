@@ -55,7 +55,7 @@ services:
       dockerfile: ./Webshop.Catalog.Api/Dockerfile
     restart: unless-stopped
     ports:
-      - 8084:5000
+      - 8088:5000
     networks:
       - backtier
 
