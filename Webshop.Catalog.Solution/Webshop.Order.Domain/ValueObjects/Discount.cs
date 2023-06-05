@@ -22,7 +22,7 @@ public partial struct Discount
     public static Discount FromOrBoundary(decimal value)
         => value > MaxValue ? Discount.Max : value < MinValue ? Discount.Min : From(value);
 
-    public decimal Pct => Value / 100;
+    public decimal ToPercent() => Value / 100;
     
     public static Discount operator +(Discount lhs, Discount rhs) => FromOrBoundary(lhs.Value + rhs.Value);
     public static Discount operator -(Discount lhs, Discount rhs) => FromOrBoundary(lhs.Value - rhs.Value);

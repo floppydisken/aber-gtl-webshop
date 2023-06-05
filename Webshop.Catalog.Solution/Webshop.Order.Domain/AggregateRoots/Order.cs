@@ -8,7 +8,7 @@ public class Order : AggregateRoot
 { 
     public Total Total => OrderLines.Aggregate(
         Total.Zero, 
-        (current, orderLine) => current + orderLine.Total - (orderLine.Total * Discount.Pct)
+        (current, orderLine) => current + orderLine.Total - (orderLine.Total * Discount.ToPercent())
     );
     public OrderStatus Status { get; set; } = OrderStatus.Created;
     public Discount Discount { get; set; } = Discount.Zero;
