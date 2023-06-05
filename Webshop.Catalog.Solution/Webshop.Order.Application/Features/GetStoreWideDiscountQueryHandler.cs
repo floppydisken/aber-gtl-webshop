@@ -15,5 +15,5 @@ public class GetStoreWideDiscountQueryHandler : IGetStoreWideDiscountQueryHandle
     }
     
     public async Task<Result<Discount>> Handle(GetStoreWideDiscountQuery query, CancellationToken cancellationToken = default)
-        => Result.Ok((await voucherRepository.GetByCodeAsync(VoucherCode.StoreWide.Value))?.Discount ?? Discount.Zero);
+        => Result.Ok((await voucherRepository.GetByCodeAsync(VoucherCode.StoreWide))?.Discount ?? Discount.Zero);
 }

@@ -18,7 +18,7 @@ public class SetStoreWideDiscountCommandHandler : ISetStoreWideDiscountCommandHa
 
     public async Task<Result> Handle(SetStoreWideDiscountCommand command, CancellationToken cancellationToken = default)
     {
-        var discount = await voucherRepository.GetByCodeAsync(VoucherCode.StoreWide.Value);
+        var discount = await voucherRepository.GetByCodeAsync(VoucherCode.StoreWide);
 
         var discountResult = FluentVogen
             .UseMapper(() => Discount.From(command.Amount))
