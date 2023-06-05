@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Webshop.Application.Contracts;
 using Webshop.Domain.Common;
 using Webshop.Order.Application.Abstractions;
 using Webshop.Order.Domain;
@@ -14,17 +15,20 @@ public class BuyCommandHandler : IBuyCommandHandler
 {
     private readonly IOrderRepository orderRepository;
     private readonly IVoucherRepository voucherRepository;
+    private readonly IDispatcher dispatcher;
     private readonly CatalogClient catalogClient;
     private readonly IPaymentClient paymentClient;
 
     public BuyCommandHandler(
         IOrderRepository orderRepository, 
         IVoucherRepository voucherRepository,
+        IDispatcher dispatcher,
         CatalogClient catalogClient, 
         IPaymentClient paymentClient
     ) {
         this.orderRepository = orderRepository;
         this.voucherRepository = voucherRepository;
+        this.dispatcher = dispatcher;
         this.catalogClient = catalogClient;
         this.paymentClient = paymentClient;
     }
@@ -32,15 +36,16 @@ public class BuyCommandHandler : IBuyCommandHandler
     public async Task<Result> Handle(BuyCommand command, CancellationToken cancellationToken = default)
     {
         var products = await catalogClient.GetAllAsync(command.OrderLines.Select(ol => ol.ProductId));
-        const string storeWideDiscountCode = "STORE_WIDE";
 
         Voucher? voucher = null;
-        if (command.VoucherCode is not null && command.VoucherCode != storeWideDiscountCode)
+        if (command.VoucherCode is not null && command.VoucherCode != VoucherCode.StoreWide)
         {
+            // TODO: Handle try catch
             voucher = await voucherRepository.GetByCodeAsync(command.VoucherCode);
         }
 
-        var storeWideVoucher = await voucherRepository.GetByCodeAsync(storeWideDiscountCode);
+        var storeWideDiscount = (await dispatcher.Dispatch(new GetStoreWideDiscountQuery()))
+            .UnwrapOr(Discount.Zero);
 
         await orderRepository.CreateAsync(new() 
         {
@@ -56,7 +61,7 @@ public class BuyCommandHandler : IBuyCommandHandler
                     Quantity = Quantity.From(ol.Quantity),
                 };
             })),
-            Discount = (voucher?.Discount ?? Discount.Zero) + (storeWideVoucher?.Discount ?? Discount.Zero),
+            Discount = (voucher?.Discount ?? Discount.Zero) + storeWideDiscount,
             CustomerId = command.CustomerId,
         });
 

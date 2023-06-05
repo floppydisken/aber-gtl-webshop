@@ -23,5 +23,7 @@ public static class Errors
         public static Error ValueIsEmpty(string value) => new Error("value.empty", $"The value cannot be empty: {value} ");
         public static Error ValueOutOfRange(string valueName, int minValue, int maxValue) =>
             new Error("value.out.of.Range", $"Value '{valueName}' should be between {minValue} and {maxValue}.");
+        public static Error ValueOutOfRange(string valueName, decimal minValue, decimal maxValue, string? message = null) =>
+            new Error("value.out.of.Range", $"Value '{valueName}' should be between {minValue} and {maxValue}.{(message is not null ? $" Inner Message: {message}" : "")}");
     }
 }
