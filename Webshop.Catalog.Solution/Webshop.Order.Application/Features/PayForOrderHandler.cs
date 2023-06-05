@@ -48,8 +48,8 @@ public class PayForOrderCommandHandler : IPayForOrderCommandHandler
             order.Status = OrderStatus.Pending;
             order.TransactionId = transaction.Unwrap().TransactionId;
 
-            await this.orderRepository.UpdateAsync(order);
-            this.logger.LogInformation("Moved Order with ID '{OrderID}' to status '{OrderStatus}'", order.Id, OrderStatus.Pending);
+            await orderRepository.UpdateAsync(order);
+            logger.LogInformation("Moved Order with ID '{OrderID}' to status '{OrderStatus}'", order.Id, OrderStatus.Pending);
         }
         catch (Exception e)
         {

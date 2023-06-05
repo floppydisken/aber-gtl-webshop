@@ -9,18 +9,21 @@ namespace Webshop.Order.Domain.ValueObjects;
 [Instance("Max", 15)]
 public partial struct Discount
 {
-    private static readonly decimal MinValue = 0;
-    private static readonly decimal MaxValue = 15;
+    private const decimal MinValue = 0;
+    private const decimal MaxValue = 15;
 
     public static Validation Validate(decimal value) =>
-        value < Discount.MinValue
-            ? Validation.Invalid(Errors.General.ValueTooSmall(nameof(value), Discount.MinValue).Message.Value)
-            : value > Discount.MaxValue
-            ? Validation.Invalid(Errors.General.ValueTooLarge(nameof(value), Discount.MaxValue).Message.Value)
+        value < MinValue
+            ? Validation.Invalid(Errors.General.ValueTooSmall(nameof(value), MinValue).Message.Value)
+            : value > MaxValue
+            ? Validation.Invalid(Errors.General.ValueTooLarge(nameof(value), MaxValue).Message.Value)
             : Validation.Ok;
 
     public static Discount FromOrBoundary(decimal value)
-        => value > MaxValue ? Max : value < MinValue ? Min : From(value);
+        => value > MaxValue ? Discount.Max : value < MinValue ? Discount.Min : From(value);
 
     public decimal Pct => Value / 100;
+    
+    public static Discount operator +(Discount lhs, Discount rhs) => FromOrBoundary(lhs.Value + rhs.Value);
+    public static Discount operator -(Discount lhs, Discount rhs) => FromOrBoundary(lhs.Value - rhs.Value);
 }

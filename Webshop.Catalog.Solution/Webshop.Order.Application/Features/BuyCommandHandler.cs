@@ -32,12 +32,15 @@ public class BuyCommandHandler : IBuyCommandHandler
     public async Task<Result> Handle(BuyCommand command, CancellationToken cancellationToken = default)
     {
         var products = await catalogClient.GetAllAsync(command.OrderLines.Select(ol => ol.ProductId));
+        const string storeWideDiscountCode = "STORE_WIDE";
 
         Voucher? voucher = null;
-        if (command.VoucherCode is not null)
+        if (command.VoucherCode is not null && command.VoucherCode != storeWideDiscountCode)
         {
             voucher = await voucherRepository.GetByCodeAsync(command.VoucherCode);
         }
+
+        var storeWideVoucher = await voucherRepository.GetByCodeAsync(storeWideDiscountCode);
 
         await orderRepository.CreateAsync(new() 
         {
@@ -53,7 +56,7 @@ public class BuyCommandHandler : IBuyCommandHandler
                     Quantity = Quantity.From(ol.Quantity),
                 };
             })),
-            Discount = voucher?.Discount ?? Discount.Zero,
+            Discount = (voucher?.Discount ?? Discount.Zero) + (storeWideVoucher?.Discount ?? Discount.Zero),
             CustomerId = command.CustomerId,
         });
 
