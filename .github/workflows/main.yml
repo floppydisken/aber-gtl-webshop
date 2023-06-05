@@ -17,7 +17,7 @@ jobs:
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
       
       - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+        run: postman login --with-api-key PMAK-647e3ebc1cc97e12ffed2a2f-87ee4f2faf6385ca6290c6791b5dcfa5fd
 
       - name: Start docker-compose
         run: |
