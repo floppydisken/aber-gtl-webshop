@@ -86,8 +86,6 @@ public class BuyCommandHandler : IBuyCommandHandler
         var storeWideDiscount = (await dispatcher.Dispatch(new GetStoreWideDiscountQuery()))
             .UnwrapOr(Discount.Zero);
 
-        // Check if is in stock
-
         await orderRepository.CreateAsync(new()
         {
             Id = command.OrderId,
