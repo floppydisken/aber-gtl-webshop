@@ -25,7 +25,7 @@ jobs:
         run: |
           cd ./Webshop.Catalog.Solution/ && 
           docker-compose up -d && 
-          timeout 60s sh -c 'until docker ps | grep webshopcatalogsolution-orderapi | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done'
+          timeout 60s sh -c 'until docker ps | grep webshop.catalog | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done'
 
       
       - name: Login to Postman CLI
