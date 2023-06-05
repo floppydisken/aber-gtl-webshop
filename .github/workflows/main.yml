@@ -18,7 +18,7 @@ jobs:
 
       - name: Start docker-compose
         run: |
-          cd Webshop.Catalog.Solution\ &&
+          cd .\Webshop.Catalog.Solution\ && 
           docker-compose up -wait 
       
       - name: Login to Postman CLI
