@@ -15,11 +15,9 @@ jobs:
       - name: Install Postman CLI
         run: |
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-          
-      - name: disable and stop mono-xsp4.service
-        run: |
-          sudo systemctl stop mono-xsp4.service || true
-          sudo systemctl disable mono-xsp4.service || true
+      
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
 
       - name: Start docker-compose
         run: |
@@ -27,9 +25,6 @@ jobs:
           docker-compose up -d && 
           timeout 60s sh -c 'until docker ps | grep webshop.order | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done'
 
-      
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Run API tests
         run: |
           postman collection run "6902317-dfc17666-e873-412c-92d7-b7b2198fc04e" -e "6902317-029289d0-3b08-4cd5-ba61-71e3c39b41c3"
