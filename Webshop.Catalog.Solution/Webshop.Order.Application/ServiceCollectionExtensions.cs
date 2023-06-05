@@ -17,8 +17,6 @@ public static class ServiceCollectionExtensions
         services.AddPaymentClient();
         services.AddDispatcher(Assembly.GetExecutingAssembly());
 
-        services.AddMediatR(opts => opts.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-
         return services;
     }
 }
