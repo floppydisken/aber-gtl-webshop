@@ -100,8 +100,7 @@ public class ProductController : WebshopController
         return FromResult(commandResult);
     }
 
-    [HttpGet]
-    [Route("{id}")]
+    [HttpGet("{id}")]
     public async Task<IActionResult> GetProduct(int id)
     {
         GetProductQuery query = new GetProductQuery(id);

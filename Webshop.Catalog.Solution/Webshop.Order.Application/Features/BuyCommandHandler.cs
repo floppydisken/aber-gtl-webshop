@@ -58,7 +58,7 @@ public class BuyCommandHandler : IBuyCommandHandler
         if (productsNotInStock.Any())
         {
             return Result.Fail(Errors.General.ValueIsInvalid(
-                $"IDs [{string.Join(", ", productsNotInStock.Select(p => p.Id))}]", 
+                $"IDs [{string.Join(", ", productsNotInStock.Select(p => p.Id))}]",
                 "The products are not in stock."));
         }
 

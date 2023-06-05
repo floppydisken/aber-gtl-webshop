@@ -127,7 +127,7 @@ public static class MappingExtensions
 
             Name = nameResult.Unwrap(),
             SKU = skuResult.Unwrap(),
-            UnitPrice = Total.From(dto.UnitPrice),
+            UnitPrice = Total.From(dto.Price),
             
             AmountInStock = amountInStock,
             MinStock = minStock,
@@ -152,7 +152,7 @@ public static class MappingExtensions
         {
             Name = model.Name.Value,
             SKU = model.SKU.Value,
-            UnitPrice = model.UnitPrice.Value
+            Price = model.UnitPrice.Value
         });
     }
 
