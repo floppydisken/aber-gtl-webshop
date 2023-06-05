@@ -18,6 +18,19 @@ public class CreateVoucherCommandHandler : ICreateVoucherCommandHandler
 
     public async Task<Result> Handle(CreateVoucherCommand request, CancellationToken cancellationToken)
     {
+        var voucherCodeResult = FluentVogen
+            .UseMapper(() => VoucherCode.From(request.Code))
+            .UseError(e => Errors.General.ValueIsInvalid(
+                nameof(request.Code),
+                e.Message
+            ))
+            .Run();
+
+        if (voucherCodeResult.Failure)
+        {
+            return voucherCodeResult;
+        }
+        
         var discountResult = FluentVogen
             .UseMapper(() => Discount.From(request.Amount))
             .UseError((e) =>
