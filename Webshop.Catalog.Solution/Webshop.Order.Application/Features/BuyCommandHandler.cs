@@ -63,7 +63,7 @@ public class BuyCommandHandler : IBuyCommandHandler
         }
 
         var productsWhereQuantitiesExceedStock = products
-            .Where(p => (p.AmountInStock - command.OrderLines.First(ol => ol.ProductId == p.Id).Quantity) < 0)
+            .Where(p => (p.AmountInStock - command.OrderLines.First(ol => ol.ProductId == p.Id).Quantity) < p.MinStock)
             .ToArray();
 
         if (productsWhereQuantitiesExceedStock.Any())

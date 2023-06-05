@@ -7,7 +7,7 @@ namespace Webshop.Order.Domain.ValueObjects;
 [ValueObject<int>]
 [Instance("Zero", 0)]
 [Instance("Min", 0)]
-public partial struct Quantity : IComparisonOperators<Quantity, int, bool>
+public partial struct Quantity : IComparisonOperators<Quantity, int, bool>, IComparisonOperators<Quantity, Quantity, bool>
 {
     private static readonly int MinValue = 0;
 
@@ -26,4 +26,8 @@ public partial struct Quantity : IComparisonOperators<Quantity, int, bool>
     public static bool operator >=(Quantity left, int right) => left.Value >= right;
     public static bool operator <(Quantity left, int right) => left.Value < right;
     public static bool operator <=(Quantity left, int right) => left.Value <= right;
+    public static bool operator >(Quantity left, Quantity right) => left.Value > right.Value;
+    public static bool operator >=(Quantity left, Quantity right) => left.Value >= right.Value;
+    public static bool operator <(Quantity left, Quantity right) => left.Value < right.Value;
+    public static bool operator <=(Quantity left, Quantity right) => left.Value <= right.Value;
 }
