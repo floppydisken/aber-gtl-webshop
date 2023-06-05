@@ -22,7 +22,7 @@ public class SetStoreWideDiscountCommandHandler : ISetStoreWideDiscountCommandHa
 
         var discountResult = FluentVogen
             .UseMapper(() => Discount.From(command.Amount))
-            .UseErrorHandler((e) =>
+            .UseError((e) =>
                 Errors.General.ValueOutOfRange(
                     nameof(command.Amount),
                     Discount.Min.Value,

@@ -17,7 +17,7 @@ public class FluentVogenBuilder<T>
         return this;
     }
 
-    public FluentVogenBuilder<T> UseErrorHandler(Func<ValueObjectValidationException, Error> errorHandler)
+    public FluentVogenBuilder<T> UseError(Func<ValueObjectValidationException, Error> errorHandler)
     {
         ErrorHandler = errorHandler;
         return this;
