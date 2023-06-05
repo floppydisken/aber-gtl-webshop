@@ -61,4 +61,11 @@ public class CatalogClient
 
         return Result.Ok<IEnumerable<Product>>(products);
     }
+
+    public async Task UpdateAsync(Product product)
+    {
+        var request = await client.GetAsync($"{options.Uri}/api/products/{product.Id}");
+        var result = await request.Content.ReadAsStreamAsync();
+        var dto = JsonSerializer.Deserialize<ProductDto>(result);
+    }
 }

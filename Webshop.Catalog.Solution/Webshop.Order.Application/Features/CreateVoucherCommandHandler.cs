@@ -30,7 +30,7 @@ public class CreateVoucherCommandHandler : ICreateVoucherCommandHandler
         {
             return voucherCodeResult;
         }
-        
+
         var discountResult = FluentVogen
             .UseMapper(() => Discount.From(request.Amount))
             .UseError((e) =>
