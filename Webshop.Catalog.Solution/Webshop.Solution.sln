@@ -20,6 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database Seed", "Database S
 		Product.sql = scripts/Product.sql
 		ProductCategory.sql = scripts/ProductCategory.sql
 		Seed Demo Customers.sql = scripts/Seed Demo Customers.sql
+		scripts\SeedProducts.sql = scripts\SeedProducts.sql
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webshop.Customer.Persistence", "Webshop.Customer.Persistence\Webshop.Customer.Persistence.csproj", "{29BE63A8-5FEB-4C07-A0DD-89161A1513DF}"

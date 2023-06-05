@@ -14,4 +14,12 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
+    
+    public static IServiceCollection AddDispatcher(this IServiceCollection services, Assembly assembly)
+    {
+        services.AddMediatR(opts => opts.RegisterServicesFromAssembly(assembly));
+        services.AddScoped<IDispatcher, Dispatcher>();
+
+        return services;
+    }
 }

@@ -2,7 +2,7 @@ using System.Runtime.InteropServices.JavaScript;
 using Vogen;
 using Webshop.Domain.Common;
 
-namespace Webshop.Order.Application;
+namespace Webshop.Domain.Common;
 
 public class FluentVogenBuilder<T>
 {

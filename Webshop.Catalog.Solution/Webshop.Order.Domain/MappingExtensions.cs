@@ -84,16 +84,39 @@ public static class MappingExtensions
 
     public static Result<AggregateRoots.Product> ToModel(this Dto.ProductDto dto)
     {
-        var nameResult = VogenToResult(() => NonEmptyString.From(dto.Name), Errors.General.ValueIsEmpty(nameof(dto.Name)));
+        var nameResult = FluentVogen
+            .UseMapper(() => NonEmptyString.From(dto.Name))
+            .UseError((e) => Errors.General.ValueIsEmpty(nameof(dto.Name)))
+            .Run();
+ 
         if (nameResult.Failure)
         {
             return Result.Fail<AggregateRoots.Product>(nameResult.Error);
         }
 
-        var skuResult = VogenToResult(() => NonEmptyString.From(dto.SKU), Errors.General.ValueIsEmpty(nameof(dto.SKU)));
+        var skuResult = FluentVogen
+            .UseMapper(() => NonEmptyString.From(dto.SKU))
+            .UseError(_ => Errors.General.ValueIsEmpty(nameof(dto.SKU)))
+            .Run();
         if (skuResult.Failure)
         {
             return Result.Fail<AggregateRoots.Product>(skuResult.Error);
+        }
+
+        var amountInStock = FluentVogen
+            .UseMapper(() => Quantity.FromOrBoundary(dto.AmountInStock))
+            .Run();
+
+        var minStock = FluentVogen
+            .UseMapper(() => Quantity.FromOrBoundary(dto.MinStock))
+            .Run();
+
+        if (!Enum.TryParse(dto.Currency, out Currency currency))
+        {
+            return Result.Fail<AggregateRoots.Product>(
+                Errors.General.ValueIsInvalid(nameof(dto.Currency), 
+                    $"Could not parse {dto.Currency}. Values has to be one of [{string.Join(", ", Enum.GetValues<Currency>().Select(e => e.ToString()))}]."
+                ));
         }
 
         return Result.Ok<AggregateRoots.Product>(new()
@@ -104,7 +127,12 @@ public static class MappingExtensions
 
             Name = nameResult.Unwrap(),
             SKU = skuResult.Unwrap(),
-            UnitPrice = Total.From(dto.UnitPrice)
+            UnitPrice = Total.From(dto.UnitPrice),
+            
+            AmountInStock = amountInStock,
+            MinStock = minStock,
+            
+            Currency = currency
         });
     }
 
