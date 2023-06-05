@@ -1,7 +1,7 @@
 using Vogen;
 using Webshop.Domain.Common;
 
-namespace Webshop.Order.Application;
+namespace Webshop.Domain.Common;
 
 public static class VogenHelper
 {

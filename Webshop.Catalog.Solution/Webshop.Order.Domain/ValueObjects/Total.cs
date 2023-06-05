@@ -29,7 +29,8 @@ public partial struct Total
     public static Total operator +(Total lhs, decimal rhs) => From(lhs.Value + rhs);
     public static Total operator *(Total lhs, decimal rhs) => From(lhs.Value * rhs);
     public static Total operator *(Total lhs, int rhs) => From(lhs.Value * rhs);
-    public static Total operator *(Total lhs, Quantity quantity) => From(lhs.Value * quantity.Value);
+    public static Total operator *(Total lhs, Quantity rhs) => From(lhs.Value * rhs.Value);
+    public static Total operator *(Quantity lhs, Total rhs) => From(lhs.Value * rhs.Value);
     public static Total operator /(Total lhs, int rhs) => From(lhs.Value / rhs);
     public static Total operator /(Total lhs, decimal rhs) => From(lhs.Value / rhs);
     public static Total operator /(Total lhs, Total rhs) => From(lhs.Value / rhs.Value);

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Webshop.Api;
+using Webshop.Application.Contracts;
 using Webshop.Order.Application.Abstractions;
 
 namespace Webshop.Order.Api.Controllers;
@@ -10,25 +11,33 @@ namespace Webshop.Order.Api.Controllers;
 [Route("api/orders")]
 public class OrderController : WebshopController
 {
-    private readonly IMediator mediator;
+    private readonly IDispatcher dispatcher;
 
-    public OrderController(IMediator mediator)
+    public OrderController(IDispatcher dispatcher)
     {
-        this.mediator = mediator;
+        this.dispatcher = dispatcher;
     }
 
     [HttpPost]
-    public Task<IActionResult> PostAsync([FromBody] BuyCommand request)
+    public async Task<IActionResult> BuyAsync([FromBody] BuyCommand request)
     {
-        mediator.Send(request);
+        var result = await dispatcher.Dispatch(request);
 
-        return Task.FromResult(Ok() as IActionResult);
+        return Ok(result);
+    }
+
+    [HttpPost("{id}/pay")]
+    public async Task<IActionResult> PayAsync([FromBody] PayForOrderCommand request)
+    {
+        var result = await dispatcher.Dispatch(request);
+        
+        return result.ToResponse();
     }
 
     [HttpGet("{id}")]
-    public Task<IActionResult> GetAsync(int id)
+    public async Task<IActionResult> GetAsync(int id)
     {
-        // return mediator.Send(new GetOrderQuery { OrderId = id });
+        // return await dispatcher.Dispatch(new GetOrderQuery() { OrderId = id });
         throw new NotImplementedException();
     }
 }

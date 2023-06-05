@@ -40,7 +40,7 @@ public static class CustomerDomainMapperExtensions
 
 public class CustomerClientOptions
 {
-    public Uri Uri { get; set; } = new ("http://0.0.0.0:8085");
+    public Uri Uri { get; set; } = new ("http://127.0.0.1:8085");
 }
 
 public class CustomerClient
