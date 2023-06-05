@@ -17,7 +17,8 @@ jobs:
           curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
 
       - name: Start docker-compose
-        run: docker-compose -f Webshop.Catalog.Solution/docker-compose.yml -d 
+        run: cd Webshop.Catalog.Solution\ \
+             docker-compose up -wait 
       
       - name: Login to Postman CLI
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
