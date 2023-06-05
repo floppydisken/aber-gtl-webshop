@@ -39,10 +39,10 @@ public class VoucherRepository : IVoucherRepository
         => await collection
             .FindOneAndReplaceAsync(o => o.Id == entity.Id, entity.ToDto());
 
-    public async Task<Voucher> GetByCodeAsync(string code)
+    public async Task<Voucher?> GetByCodeAsync(string code)
         => (await collection
                 .Find(v => v.Code == code)
                 .FirstOrDefaultAsync())
             .ToModel()
-            .Unwrap();
+            .UnwrapOrDefault();
 }

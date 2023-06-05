@@ -3,7 +3,7 @@ using Webshop.Order.Domain.AggregateRoots;
 
 namespace Webshop.Order.Persistence.Abstractions;
 
-public interface IVoucherRepository : IRepository<Domain.AggregateRoots.Voucher>
+public interface IVoucherRepository : IRepository<Voucher>
 {
-    public Task<Voucher> GetByCodeAsync(string code);
+    public Task<Voucher?> GetByCodeAsync(string code);
 }
