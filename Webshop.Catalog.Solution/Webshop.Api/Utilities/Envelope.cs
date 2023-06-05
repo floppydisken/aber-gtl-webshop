@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace Webshop.Api.Utilities;
 
@@ -29,13 +30,19 @@ public class Envelope : Envelope<string>
 
 public class Envelope<T>
 {
-    public T Result { get; }
-    public string ErrorMessage { get; }
+    [JsonPropertyName("result")]
+    public T Result { get; set; }
+    public string ErrorMessage { get; set; }
     public DateTime TimeGenerated { get; set; }
     protected internal Envelope(T result, string errorMessage)
     {
         this.Result = result;
         this.ErrorMessage = errorMessage;
         this.TimeGenerated = DateTime.UtcNow;
+    }
+
+    public Envelope()
+    {
+        
     }
 }

@@ -1,5 +1,6 @@
-using Vogen;
 using System.Text.Json;
+using Vogen;
+using Webshop.Api.Utilities;
 using Webshop.Domain.Common;
 using Webshop.Order.Domain;
 using Webshop.Order.Domain.Dto;
@@ -19,6 +20,11 @@ public class CatalogClient
     private readonly HttpClient client;
     private readonly CatalogClientOptions options;
 
+    private readonly JsonSerializerOptions jsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     public CatalogClient(HttpClient client, CatalogClientOptions options)
     {
         this.client = client;
@@ -27,9 +33,9 @@ public class CatalogClient
 
     public async Task<Result<Product>> GetAsync(int id)
     {
-        var request = await client.GetAsync($"{options.Uri}/api/products/{id}");
-        var result = await request.Content.ReadAsStreamAsync();
-        var dto = JsonSerializer.Deserialize<ProductDto>(result);
+        var response = await client.GetAsync($"{options.Uri}api/products/{id}");
+        var contentAsString = await response.Content.ReadAsStringAsync();
+        var dto = JsonSerializer.Deserialize<Envelope<ProductDto>>(contentAsString, jsonOptions);
 
         if (dto is null)
         {
@@ -38,7 +44,7 @@ public class CatalogClient
 
         try
         {
-            var model = dto.ToModel();
+            var model = dto.Result.ToModel();
 
             return Result.Ok(model);
         }
@@ -64,8 +70,8 @@ public class CatalogClient
 
     public async Task UpdateAsync(Product product)
     {
-        var request = await client.GetAsync($"{options.Uri}/api/products/{product.Id}");
-        var result = await request.Content.ReadAsStreamAsync();
+        var request = await client.GetAsync($"{options.Uri}api/products/{product.Id}");
+        var result = await request.Content.ReadAsStringAsync();
         var dto = JsonSerializer.Deserialize<ProductDto>(result);
     }
 }
