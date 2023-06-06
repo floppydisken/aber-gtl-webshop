@@ -23,12 +23,12 @@ public class OrderRepository : IOrderRepository
         => await collection.FindOneAndDeleteAsync(o => o.Id == id);
 
     public async Task<IEnumerable<Domain.AggregateRoots.Order>> GetAll()
-        => (await this.collection.Aggregate().ToListAsync()).Select(o => o.ToModel().Unwrap());
+        => (await collection.Aggregate().ToListAsync()).Select(o => o.ToModel().Unwrap());
 
     public async Task<Domain.AggregateRoots.Order> GetByIdAsync(int id)
-        => (await this.collection
+        => (await collection
             .Find(o => o.Id == id)
-            .FirstOrDefaultAsync())
+            .FirstAsync())
             .ToModel()
             .Unwrap();
 
