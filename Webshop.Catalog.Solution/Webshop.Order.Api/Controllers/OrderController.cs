@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Webshop.Api;
 using Webshop.Application.Contracts;
@@ -37,10 +38,11 @@ public class OrderController : WebshopController
     }
 
     [HttpGet("{id}")]
-    public async Task<OrderDto> GetAsync(int id)
+    [ProducesResponseType(typeof(OrderDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAsync(int id)
     {
         var result = (await dispatcher.Dispatch(new GetOrderQuery() { OrderId = id }));
 
-        return result.Value.ToDto().Unwrap();
+        return Ok(result.Value.ToDto().Unwrap());
     }
 }
