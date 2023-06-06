@@ -29,14 +29,22 @@ public static class MappingExtensions
             return Result.Fail<AggregateRoots.Order>(orderLinesResult.Error);
         }
 
+        var orderStatusResult = FluentVogen
+            .UseMapper(() => OrderStatus.From(dto.Status))
+            .UseError((e) => Errors.General.ValueIsInvalid(nameof(dto.Status),
+                $"Could not deserialize {nameof(Dto.OrderDto)} since {dto.Status} is an invalid status."))
+            .Run();
+
         return Result.Ok<AggregateRoots.Order>(new()
         {
             OrderLines = orderLinesResult.Unwrap(),
             Discount = Discount.FromOrBoundary(dto.Discount),
             Created = dto.Created,
             LastModified = dto.LastModified,
+            TransactionId = dto.TransactionId,
             Id = dto.Id,
-            CustomerId = dto.CustomerId
+            CustomerId = dto.CustomerId,
+            Status = orderStatusResult.Unwrap()
         });
     }
 
