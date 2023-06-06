@@ -103,8 +103,6 @@ services:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=PSU@password
       - MSSQL_PID=Express
-    volumes:
-      - ./data:/var/opt/mssql/data
     networks:
       - backtier
     healthcheck:
