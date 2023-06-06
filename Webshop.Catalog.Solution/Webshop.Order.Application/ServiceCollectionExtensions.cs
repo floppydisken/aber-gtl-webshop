@@ -17,7 +17,9 @@ public static class ServiceCollectionExtensions
         services.AddScoped<CatalogClient>(provider => new CatalogClient(provider.GetRequiredService<HttpClient>(), new() {
             Uri = new Uri(configuration.GetValue<string>("Catalog:Uri"))
         }));
-        services.AddScoped<CustomerClient>(provider => new CustomerClient(provider.GetRequiredService<HttpClient>(), new()));
+        services.AddScoped<CustomerClient>(provider => new CustomerClient(provider.GetRequiredService<HttpClient>(), new() {
+            Uri = new Uri(configuration.GetValue<string>("Customer:Uri"))
+        }));
         services.AddPaymentClient();
         services.AddDispatcher(typeof(ServiceCollectionExtensions).Assembly);
 
