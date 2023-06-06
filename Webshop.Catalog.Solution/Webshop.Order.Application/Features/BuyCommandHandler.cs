@@ -76,6 +76,26 @@ public class BuyCommandHandler : IBuyCommandHandler
             ));
         }
 
+        var orderLines = NonEmptyEntityList.From(command.OrderLines.Select(ol =>
+        {
+            var product = products.First(p => p.Id == ol.ProductId);
+
+            product.AmountInStock -= ol.Quantity; // Side effect, can this be mitigated?
+
+            var orderLine = new OrderLine()
+            {
+                Product = product.ToDescription(),
+                Quantity = Quantity.From(ol.Quantity),
+            };
+
+            return orderLine;
+        }).ToArray());
+
+        if (orderLines.Failure)
+        {
+            return Result.Fail(orderLines.Error);
+        }
+
         var voucherCodeResult = FluentVogen
             .UseMapper(() => VoucherCode.From(command.VoucherCode))
             .UseError(e => Errors.General.ValueIsInvalid(nameof(command.VoucherCode), e.Message))
@@ -91,20 +111,7 @@ public class BuyCommandHandler : IBuyCommandHandler
         var order = new Domain.AggregateRoots.Order()
         {
             Id = command.OrderId,
-            OrderLines = NonEmptyEntityList.From(command.OrderLines.Select(ol =>
-            {
-                var product = products.First(p => p.Id == ol.ProductId);
-
-                product.AmountInStock -= ol.Quantity; // Side effect, can this be mitigated?
-
-                var orderLine = new OrderLine()
-                {
-                    Product = product.ToDescription(),
-                    Quantity = Quantity.From(ol.Quantity),
-                };
-
-                return orderLine;
-            })),
+            OrderLines = orderLines.Unwrap(),
             Discount = (voucher?.Discount ?? Discount.Zero) + storeWideDiscount,
             CustomerId = command.CustomerId,
         };
