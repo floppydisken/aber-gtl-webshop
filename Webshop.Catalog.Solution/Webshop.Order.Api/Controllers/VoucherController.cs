@@ -16,13 +16,12 @@ public class VoucherController : WebshopController
         this.dispatcher = dispatcher;
     }
 
-
     [HttpPost]
     public async Task<IActionResult> CreateVoucherAsync([FromBody] CreateVoucherCommand request)
     {
         var result = await dispatcher.Dispatch(request);
 
-        return Ok(result);
+        return result.ToResponse();
     }
 
     [HttpGet("{code}")]
@@ -30,7 +29,7 @@ public class VoucherController : WebshopController
     {
         var result = await dispatcher.Dispatch(new GetVoucherQuery {Code = code});
 
-        return Ok(result);
+        return result.ToResponse();
     }
 
     [HttpDelete("{code}")]
@@ -46,7 +45,7 @@ public class VoucherController : WebshopController
     {
         var result = await dispatcher.Dispatch(request);
 
-        return Ok(result);
+        return result.ToResponse();
     }
 
     [HttpGet("storewide")]
@@ -54,6 +53,6 @@ public class VoucherController : WebshopController
     {
         var result = await dispatcher.Dispatch(new GetStoreWideDiscountQuery());
         
-        return Ok(result);
+        return result.ToResponse();
     }
 }
