@@ -26,7 +26,7 @@ public class OrderController : WebshopController
     {
         var result = await dispatcher.Dispatch(request);
 
-        return Ok(result);
+        return result.ToResponse();
     }
 
     [HttpPost("{id}/pay")]
@@ -43,6 +43,11 @@ public class OrderController : WebshopController
     {
         var result = (await dispatcher.Dispatch(new GetOrderQuery() { OrderId = id }));
 
-        return Ok(result.Value.ToDto().Unwrap());
+        if (result.Failure)
+        {
+            return result.ToResponse();
+        }
+        
+        return result.Value.ToDto().ToResponse();
     }
 }
