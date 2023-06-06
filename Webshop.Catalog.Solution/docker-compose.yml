@@ -61,6 +61,8 @@ services:
 
   customerapi:
     container_name: webshop.customer
+    depends_on:
+      - sqlexpress
     build: 
       context: .
       dockerfile: ./Webshop.Customer.Api/Dockerfile
@@ -72,6 +74,10 @@ services:
 
   orderapi:
     container_name: webshop.order
+    depends_on:
+      - customerapi
+      - catalogapi
+      - paymentapi
     build: 
       context: .
       dockerfile: ./Webshop.Order.Api/Dockerfile
@@ -101,6 +107,12 @@ services:
       - ./data:/var/opt/mssql/data
     networks:
       - backtier
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P PSU@password -Q "SELECT 1" || exit 1
+      interval: 5s
+      timeout: 30s
+      retries: 10
+      start_period: 30s
 
   mongo:
     image: mongo
