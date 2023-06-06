@@ -39,4 +39,9 @@ public class Error : ValueObject
     {
         return HashCode.Combine(Code);
     }
+
+    public override string ToString()
+    {
+        return $"ErrorCode: {Code}; Message: {Message}; StatusCode: {StatusCode}";
+    }
 }

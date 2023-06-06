@@ -17,7 +17,7 @@ public partial struct Quantity : IComparisonOperators<Quantity, int, bool>, ICom
             : Validation.Invalid(Errors.General.ValueTooSmall(nameof(value), Quantity.MinValue).Message.Value);
 
     public static Quantity FromOrBoundary(int value)
-        => value < Quantity.MinValue ? Quantity.From(value) : Quantity.Min;
+        => value > Quantity.MinValue ? Quantity.From(value) : Quantity.Min;
         
     public static Quantity operator +(Quantity lhs, Quantity rhs) => FromOrBoundary(lhs.Value + rhs.Value);
     public static Quantity operator -(Quantity lhs, Quantity rhs) => FromOrBoundary(lhs.Value - rhs.Value);

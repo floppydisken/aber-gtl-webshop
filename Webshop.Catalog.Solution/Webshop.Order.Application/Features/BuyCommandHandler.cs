@@ -52,8 +52,10 @@ public class BuyCommandHandler : IBuyCommandHandler
         }
 
         var productsNotInStock = products
-            .Where(p => p.AmountInStock == 0)
+            .Where(p => p.AmountInStock == Quantity.Zero)
             .ToArray();
+
+        var stocks = products.Select(p => p.AmountInStock.Value);
 
         if (productsNotInStock.Any())
         {
@@ -86,7 +88,7 @@ public class BuyCommandHandler : IBuyCommandHandler
         var storeWideDiscount = (await dispatcher.Dispatch(new GetStoreWideDiscountQuery()))
             .UnwrapOr(Discount.Zero);
 
-        await orderRepository.CreateAsync(new()
+        var order = new Domain.AggregateRoots.Order()
         {
             Id = command.OrderId,
             OrderLines = NonEmptyEntityList.From(command.OrderLines.Select(ol =>
@@ -95,15 +97,19 @@ public class BuyCommandHandler : IBuyCommandHandler
 
                 product.AmountInStock -= ol.Quantity; // Side effect, can this be mitigated?
 
-                return new OrderLine()
+                var orderLine = new OrderLine()
                 {
                     Product = product.ToDescription(),
                     Quantity = Quantity.From(ol.Quantity),
                 };
+
+                return orderLine;
             })),
             Discount = (voucher?.Discount ?? Discount.Zero) + storeWideDiscount,
             CustomerId = command.CustomerId,
-        });
+        };
+
+        await orderRepository.CreateAsync(order);
 
         foreach (var product in products)
         {

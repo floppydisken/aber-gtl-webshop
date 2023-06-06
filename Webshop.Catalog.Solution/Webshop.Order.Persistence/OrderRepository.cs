@@ -7,19 +7,17 @@ namespace Webshop.Order.Persistence;
 
 public class OrderRepository : IOrderRepository
 {
-    private readonly IMongoClient client;
     private readonly IMongoCollection<Domain.Dto.OrderDto> collection;
 
     public OrderRepository(IMongoClient client)
     {
-        this.client = client;
-        this.collection = client
+        collection = client
             .GetDatabase("orders")
             .GetCollection<Domain.Dto.OrderDto>("orders");
     }
 
     public async Task CreateAsync(Domain.AggregateRoots.Order entity)
-        => await collection.InsertOneAsync(entity.ToDto());
+        => await collection.InsertOneAsync(entity.ToDto().Unwrap());
 
     public async Task DeleteAsync(int id)
         => await collection.FindOneAndDeleteAsync(o => o.Id == id);

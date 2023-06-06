@@ -44,7 +44,7 @@ public class VoucherRepository : IVoucherRepository
     public async Task<Voucher> GetByIdAsync(int id)
         => (await collection
                 .Find(o => o.Id == id) 
-                .FirstOrDefaultAsync()) 
+                .FirstOrDefaultAsync())
             .ToModel()
             .Unwrap();
 
@@ -55,7 +55,7 @@ public class VoucherRepository : IVoucherRepository
     public async Task<Voucher?> GetByCodeAsync(VoucherCode code)
         => (await collection
                 .Find(v => v.Code == code.Value)
-                .FirstOrDefaultAsync())
+                .FirstOrDefaultAsync())?
             .ToModel()
             .UnwrapOrDefault();
 

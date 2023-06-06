@@ -56,13 +56,14 @@ public class CatalogClient
 
     public async Task<Result<IEnumerable<Product>>> GetAllAsync(IEnumerable<int> ids)
     {
-        var products = new List<Product>();
+        var products = new List<Product>(ids.Count());
 
         foreach (var id in ids)
         {
             // TODO: This is incredibly ineffecient, but good enough for this case.
             //       A slow version of O(n) complexity. Yay.
-            products.Add(await GetAsync(id));
+            var product = await GetAsync(id);
+            products.Add(product.Unwrap());
         }
 
         return Result.Ok<IEnumerable<Product>>(products);

@@ -15,7 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<CatalogClient>(provider => new CatalogClient(provider.GetRequiredService<HttpClient>(), new()));
         services.AddScoped<CustomerClient>(provider => new CustomerClient(provider.GetRequiredService<HttpClient>(), new()));
         services.AddPaymentClient();
-        services.AddDispatcher(Assembly.GetExecutingAssembly());
+        services.AddDispatcher(typeof(ServiceCollectionExtensions).Assembly);
 
         return services;
     }

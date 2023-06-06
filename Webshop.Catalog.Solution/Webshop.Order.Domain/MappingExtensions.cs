@@ -42,14 +42,19 @@ public static class MappingExtensions
 
     public static Result<Dto.OrderDto> ToDto(this AggregateRoots.Order model)
     {
-
+        var total = model.Total.Value;
+        var discount = model.Discount.Value;
+        var orderLines = model.OrderLines.Select(ol => ol.ToDto().Unwrap());
+        
         return Result.Ok<Dto.OrderDto>(new()
         {
+            Id = model.Id,
+            Total = total,
             Created = model.Created,
             LastModified = model.LastModified,
             CustomerId = model.CustomerId,
-            Discount = model.Discount.Value,
-            OrderLines = model.OrderLines.Select(ol => ol.ToDto().Unwrap())
+            Discount = discount,
+            OrderLines = orderLines,
         });
     }
 
@@ -146,15 +151,32 @@ public static class MappingExtensions
         });
     }
 
+    public static Result<Dto.ProductDto> ToDto(this AggregateRoots.Product model)
+    {
+        return Result.Ok<Dto.ProductDto>(new()
+        {
+            Id = model.Id,
+            Created = model.Created,
+            LastModified = model.LastModified,
+            Name = model.Name.Value,
+            SKU = model.Name.Value,
+            Price = model.UnitPrice.Value,
+            AmountInStock = model.AmountInStock.Value,
+            MinStock = model.MinStock.Value,
+            Currency = model.Currency.ToString()
+        });
+    }
+    
     public static Result<Dto.ProductDto> ToDto(this ValueObjects.ProductDescription model)
     {
         return Result.Ok<Dto.ProductDto>(new()
         {
             Name = model.Name.Value,
             SKU = model.SKU.Value,
-            Price = model.UnitPrice.Value
+            Price = model.UnitPrice.Value,
         });
     }
+    
 
     public static Result<AggregateRoots.Voucher> ToModel(this Dto.VoucherDto dto)
     {
