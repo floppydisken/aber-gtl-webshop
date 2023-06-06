@@ -14,6 +14,7 @@ namespace Webshop.Payment.Api.Models
             TransactionId = Guid.NewGuid();
             Created = DateTime.UtcNow;
         }
+        public Transaction() { }
         static Transaction() { }
         public static Result<Transaction> Create(int amount, Payment payment)
         {

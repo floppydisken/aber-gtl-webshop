@@ -13,7 +13,8 @@ public class PayForOrderCommandHandler : IPayForOrderCommandHandler
     private readonly IOrderRepository orderRepository;
     private readonly ILogger<PayForOrderCommandHandler> logger;
 
-    public PayForOrderCommandHandler(IPaymentClient paymentClient, IOrderRepository orderRepository, ILogger<PayForOrderCommandHandler> logger)
+    public PayForOrderCommandHandler(IPaymentClient paymentClient, IOrderRepository orderRepository,
+        ILogger<PayForOrderCommandHandler> logger)
     {
         this.paymentClient = paymentClient;
         this.orderRepository = orderRepository;
@@ -26,12 +27,18 @@ public class PayForOrderCommandHandler : IPayForOrderCommandHandler
 
         if (order.Status != OrderStatus.Created)
         {
-            this.logger.LogError("Could not move order status to '{OrderStatus}' because the Order with ID '{OrderID}' is in state '{CurrentOrderStatus}' and not '{OrderStatus}'",
+            this.logger.LogError(
+                "Could not move order status to '{OrderStatus}' because the Order with ID '{OrderID}' is in state '{CurrentOrderStatus}' and not '{OrderStatus}'",
                 OrderStatus.Pending, order.Id, order.Status);
-            return Result.Fail(new Error("order.wrong.state", $"Order with ID '{command.OrderId}' is in the wrong state. It should be in the '{OrderStatus.Created}' state"));
+            return Result.Fail(new Error("order.wrong.state",
+                $"Order with ID '{command.OrderId}' is in the wrong state. It should be in the '{OrderStatus.Created}' state"));
         }
 
-        var transaction = await paymentClient.ProcessPayment(new(order.Total.ToMinorUnit(), command.CardNumber, command.ExpirationDate, command.CVC));
+        var transaction = await paymentClient.ProcessPayment(new(
+            order.Total.ToMinorUnit(), 
+            command.CardNumber,
+            command.ExpirationDate, 
+            command.CVC));
 
         if (transaction.Failure)
         {
@@ -39,7 +46,7 @@ public class PayForOrderCommandHandler : IPayForOrderCommandHandler
             return Result.Fail(new Error(
                 "order.payment",
                 $"Failed to process payment for Order with ID {order.Id}. "
-              + $"Failed with message: '{transaction.Error.Message.Value}'"
+                + $"Failed with message: '{transaction.Error.Message.Value}'"
             ));
         }
 
@@ -49,7 +56,8 @@ public class PayForOrderCommandHandler : IPayForOrderCommandHandler
             order.TransactionId = transaction.Unwrap().TransactionId;
 
             await orderRepository.UpdateAsync(order);
-            logger.LogInformation("Moved Order with ID '{OrderID}' to status '{OrderStatus}'", order.Id, OrderStatus.Pending);
+            logger.LogInformation("Moved Order with ID '{OrderID}' to status '{OrderStatus}'", order.Id,
+                OrderStatus.Pending);
         }
         catch (Exception e)
         {

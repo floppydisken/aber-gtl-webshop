@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Webshop.Domain.Common;
 using Webshop.Payment.Api.Models;
@@ -27,13 +28,13 @@ namespace Webshop.Payment.Api.Controllers
 
         [HttpPost]
         [Route("process")]
-        public Result<Transaction> ProcessPayment(PaymentRequest request)
+        public IActionResult ProcessPayment([FromBody] PaymentRequest request)
         {
             //check for throttling
-            if (!this.throttleService.CanExecute())
-            {
-                return Result.Fail<Transaction>("The Payment service is not ready");
-            }
+            // if (!this.throttleService.CanExecute())
+            // {
+            //     return BadRequest("The Payment service is not ready");
+            // }
             //simulate process
             Result<Models.Payment> paymentResult = Models.Payment.Create(request.CardNumber, request.ExpirationDate, request.CVC);
             if (paymentResult.Success)
@@ -44,15 +45,15 @@ namespace Webshop.Payment.Api.Controllers
                     Result result = this.transactionRepository.AddTransaction(transactionResult.Value);
                     if (result.Failure)
                     {
-                        return Result.Fail<Transaction>(result.Error);
+                        return BadRequest(result.Error);
                     }
                 }
-                return transactionResult;
+                return Ok(transactionResult.Value);
             }
             else
             {
                 logger.LogWarning("Unable to create new Payment object with the following error: {error}", new { error = paymentResult.Error });
-                return Result.Fail<Transaction>(paymentResult.Error);
+                return BadRequest(paymentResult.Error);
             }
         }
     }
