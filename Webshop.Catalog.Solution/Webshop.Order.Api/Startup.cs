@@ -36,7 +36,6 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
-        services.AddOrderServices();
         services
             .AddSwaggerGen(c =>
             {
@@ -53,7 +52,7 @@ public class Startup
             .AddHealthChecks()
             .AddCheck("health", () => HealthCheckResult.Healthy());
 
-        services.AddOrderServices();
+        services.AddOrderServices(Configuration);
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
