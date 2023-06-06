@@ -16,10 +16,19 @@ public class VoucherController : WebshopController
         this.dispatcher = dispatcher;
     }
 
+
     [HttpPost]
     public async Task<IActionResult> CreateVoucherAsync([FromBody] CreateVoucherCommand request)
     {
         var result = await dispatcher.Dispatch(request);
+
+        return Ok(result);
+    }
+
+    [HttpGet("{code}")]
+    public async Task<IActionResult> GetVoucherAsync(string code)
+    {
+        var result = await dispatcher.Dispatch(new GetVoucherQuery {Code = code});
 
         return Ok(result);
     }

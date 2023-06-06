@@ -47,6 +47,7 @@ public class CreateVoucherCommandHandler : ICreateVoucherCommandHandler
         {
             await voucherRepository.CreateAsync(new()
             {
+                Id = new Random().Next(),
                 Code = VoucherCode.From(request.Code),
                 Discount = discountResult.UnwrapOr(Discount.FromOrBoundary(request.Amount))
             });
