@@ -11,7 +11,7 @@ namespace Webshop.Order.Application;
 
 public class CatalogClientOptions
 {
-    public Uri Uri { get; set; } = new("http://127.0.0.1:8084");
+    public Uri Uri { get; set; } = new("http://0.0.0.0:8088");
 }
 
 // TODO: Move to own dll or into API of Catalog API

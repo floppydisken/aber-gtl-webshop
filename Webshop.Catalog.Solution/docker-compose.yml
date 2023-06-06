@@ -55,7 +55,7 @@ services:
       dockerfile: ./Webshop.Catalog.Api/Dockerfile
     restart: unless-stopped
     ports:
-      - 8084:5000
+      - 8088:5000
     networks:
       - backtier
 
@@ -70,16 +70,22 @@ services:
     networks:
       - backtier
 
-  # orderapi:
-  #   container_name: webshop.order
-  #   build: 
-  #     context: .
-  #     dockerfile: ./Webshop.Order.Api/Dockerfile
-  #   restart: unless-stopped
-  #   ports:
-  #     - 8086:5000
-  #   networks:
-  #     - backtier
+  orderapi:
+    container_name: webshop.order
+    build: 
+      context: .
+      dockerfile: ./Webshop.Order.Api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8086:5000
+    networks:
+      - backtier
+    healthcheck:
+      test: curl --fail localhost:5000/api/health || exit 1
+      interval: 2s
+      retries: 10
+      start_period: 2s
+      timeout: 5s
 
   sqlexpress:
     container_name: webshopdatabase

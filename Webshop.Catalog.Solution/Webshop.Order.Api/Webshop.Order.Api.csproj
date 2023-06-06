@@ -3,8 +3,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Webshop.Api\Webshop.Api.csproj" />
     <ProjectReference Include="..\Webshop.Order.Application\Webshop.Order.Application.csproj" />
-    <ProjectReference Include="..\Webshop.Order.Application.Abstractions\Webshop.Order.Application.Abstractions.csproj" />
+    <ProjectReference Include="..\Webshop.Order.Application.Abstractions\Webshop.Order.Application.Abstractions.csproj"/>
   </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Serilog.AspNetCore" Version="7.0.0" />
@@ -27,6 +28,11 @@
     <UserSecretsId>85f5aaaa-612d-49d6-bac4-eef34c2a4187</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- appsettings.json from Payment.Api is seen as duplicate..  -->
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
 </Project>
