@@ -37,7 +37,8 @@ public class OrderController : WebshopController
     [HttpGet("{id}")]
     public async Task<IActionResult> GetAsync(int id)
     {
-        // return await dispatcher.Dispatch(new GetOrderQuery() { OrderId = id });
-        throw new NotImplementedException();
+        var result = (await dispatcher.Dispatch(new GetOrderQuery() { OrderId = id }));
+
+        return result.ToResponse();
     }
 }
