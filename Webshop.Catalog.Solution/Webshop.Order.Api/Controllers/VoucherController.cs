@@ -1,8 +1,10 @@
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Webshop.Api;
 using Webshop.Application.Contracts;
 using Webshop.Order.Application.Abstractions;
+using Webshop.Order.Domain.Dto;
 
 namespace Webshop.Order.Api.Controllers;
 
@@ -25,6 +27,7 @@ public class VoucherController : WebshopController
     }
 
     [HttpGet("{code}")]
+    [ProducesResponseType(typeof(VoucherDto), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetVoucherAsync(string code)
     {
         var result = await dispatcher.Dispatch(new GetVoucherQuery {Code = code});
@@ -49,6 +52,7 @@ public class VoucherController : WebshopController
     }
 
     [HttpGet("storewide")]
+    [ProducesResponseType(typeof(VoucherDto), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetStorewideDiscountAsync()
     {
         var result = await dispatcher.Dispatch(new GetStoreWideDiscountQuery());
