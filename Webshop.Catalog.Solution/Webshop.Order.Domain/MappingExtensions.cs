@@ -50,11 +50,13 @@ public static class MappingExtensions
         {
             Id = model.Id,
             Total = total,
+            TransactionId = model.TransactionId,
             Created = model.Created,
+            Status = model.Status.Value,
             LastModified = model.LastModified,
             CustomerId = model.CustomerId,
             Discount = discount,
-            OrderLines = orderLines,
+            OrderLines = orderLines
         });
     }
 

@@ -33,5 +33,7 @@ public class OrderRepository : IOrderRepository
             .Unwrap();
 
     public async Task UpdateAsync(Domain.AggregateRoots.Order entity)
-        => await this.collection.FindOneAndReplaceAsync(o => o.Id == entity.Id, entity.ToDto());
+        => await this.collection.FindOneAndReplaceAsync(
+            o => o.Id == entity.Id, 
+            entity.ToDto().Unwrap());
 }
