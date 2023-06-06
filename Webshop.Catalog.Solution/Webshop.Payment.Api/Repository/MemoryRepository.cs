@@ -16,15 +16,9 @@ namespace Webshop.Payment.Api.Repository
         public Result AddTransaction(Transaction transaction)
         {
             bool exists = ExistsTransaction(transaction);
-            if (!exists)
-            {
-                this.transactions.Add(transaction);
-                return Result.Ok();
-            }
-            else
-            {
-                return Result.Fail("A transaction with these parameters already exists. For security reasons two identical transactions cannot be processed (Amount and Cardnumber)");
-            }
+            
+            this.transactions.Add(transaction);
+            return Result.Ok();
         }
 
         private bool ExistsTransaction(Transaction transaction)

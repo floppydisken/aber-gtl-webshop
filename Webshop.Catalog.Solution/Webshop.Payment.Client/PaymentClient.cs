@@ -42,7 +42,7 @@ public class PaymentClient : IPaymentClient
         }
 
         var content = await response.Content.ReadAsStringAsync();
-        var deserialized = JsonSerializer.Deserialize<Transaction>(content);
+        var deserialized = JsonSerializer.Deserialize<Transaction>(content, jsonSettings);
 
         if (deserialized is null)
         {

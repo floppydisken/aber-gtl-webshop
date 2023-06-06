@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Webshop.Api;
 using Webshop.Application.Contracts;
 using Webshop.Order.Application.Abstractions;
+using Webshop.Order.Domain;
+using Webshop.Order.Domain.Dto;
 
 namespace Webshop.Order.Api.Controllers;
 
@@ -35,10 +37,10 @@ public class OrderController : WebshopController
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync(int id)
+    public async Task<OrderDto> GetAsync(int id)
     {
         var result = (await dispatcher.Dispatch(new GetOrderQuery() { OrderId = id }));
 
-        return result.ToResponse();
+        return result.Value.ToDto().Unwrap();
     }
 }

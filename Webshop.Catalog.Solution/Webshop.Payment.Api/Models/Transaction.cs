@@ -29,9 +29,9 @@ namespace Webshop.Payment.Api.Models
                 return Result.Fail<Transaction>(new Error(nameof(Exception), ex.Message));
             }
         }
-        public DateTime Created { get; private set; }
-        public int Amount { get; private set; }
-        public Payment Payment { get; private set; }
-        public Guid TransactionId { get; private set; }
+        public DateTime Created { get; set; }
+        public int Amount { get; set; }
+        public Payment Payment { get; set; }
+        public Guid TransactionId { get; set; }
     }
 }

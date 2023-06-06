@@ -34,8 +34,12 @@ namespace Webshop.Payment.Api.Models
             CVC = cvc;
         }
 
-        public string CardNumber { get; private set; }
-        public string ExpirationDate { get; private set; }
-        public int CVC { get; private set; }
+        public Payment()
+        {
+        }
+
+        public string CardNumber { get; set; }
+        public string ExpirationDate { get; set; }
+        public int CVC { get; set; }
     }
 }
