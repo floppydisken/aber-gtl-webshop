@@ -41,10 +41,10 @@ public class VoucherController : WebshopController
     }
 
     [HttpGet("storewide")]
-    public async Task<IActionResult> GetStorewideDiscountAsync(string code)
+    public async Task<IActionResult> GetStorewideDiscountAsync()
     {
-        var result = await dispatcher.Dispatch(new DeleteVoucherCommand {Code = code});
+        var result = await dispatcher.Dispatch(new GetStoreWideDiscountQuery());
         
-        return result.ToResponse();
+        return Ok(result);
     }
 }

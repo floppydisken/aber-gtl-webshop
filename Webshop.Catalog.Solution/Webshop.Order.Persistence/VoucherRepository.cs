@@ -20,7 +20,7 @@ public class VoucherRepository : IVoucherRepository
     public async Task CreateAsync(Voucher entity)
     {
         var existing = await collection
-            .Find(v => v.Code == entity.Code)
+            .Find(v => v.Code == entity.Code.Value)
             .FirstOrDefaultAsync();
 
         if (existing is not null)
@@ -29,7 +29,7 @@ public class VoucherRepository : IVoucherRepository
             return;
         }
         
-        await collection.InsertOneAsync(entity.ToDto());
+        await collection.InsertOneAsync(entity.ToDto().Unwrap());
     }
 
     public async Task DeleteAsync(int id)
@@ -50,7 +50,7 @@ public class VoucherRepository : IVoucherRepository
 
     public async Task UpdateAsync(Voucher entity)
         => await collection
-            .FindOneAndReplaceAsync(o => o.Id == entity.Id, entity.ToDto());
+            .FindOneAndReplaceAsync(o => o.Id == entity.Id, entity.ToDto().Unwrap());
 
     public async Task<Voucher?> GetByCodeAsync(VoucherCode code)
         => (await collection

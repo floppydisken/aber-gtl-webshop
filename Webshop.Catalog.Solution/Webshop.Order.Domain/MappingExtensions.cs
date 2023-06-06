@@ -45,7 +45,7 @@ public static class MappingExtensions
         var total = model.Total.Value;
         var discount = model.Discount.Value;
         var orderLines = model.OrderLines.Select(ol => ol.ToDto().Unwrap());
-        
+
         return Result.Ok<Dto.OrderDto>(new()
         {
             Id = model.Id,
@@ -93,7 +93,7 @@ public static class MappingExtensions
             .UseMapper(() => NonEmptyString.From(dto.Name))
             .UseError((e) => Errors.General.ValueIsEmpty(nameof(dto.Name)))
             .Run();
- 
+
         if (nameResult.Failure)
         {
             return Result.Fail<AggregateRoots.Product>(nameResult.Error);
@@ -119,7 +119,7 @@ public static class MappingExtensions
         if (!Enum.TryParse(dto.Currency, out Currency currency))
         {
             return Result.Fail<AggregateRoots.Product>(
-                Errors.General.ValueIsInvalid(nameof(dto.Currency), 
+                Errors.General.ValueIsInvalid(nameof(dto.Currency),
                     $"Could not parse {dto.Currency}. Values has to be one of [{string.Join(", ", Enum.GetValues<Currency>().Select(e => e.ToString()))}]."
                 ));
         }
@@ -133,10 +133,10 @@ public static class MappingExtensions
             Name = nameResult.Unwrap(),
             SKU = skuResult.Unwrap(),
             UnitPrice = Total.From(dto.Price),
-            
+
             AmountInStock = amountInStock,
             MinStock = minStock,
-            
+
             Currency = currency
         });
     }
@@ -166,7 +166,7 @@ public static class MappingExtensions
             Currency = model.Currency.ToString()
         });
     }
-    
+
     public static Result<Dto.ProductDto> ToDto(this ValueObjects.ProductDescription model)
     {
         return Result.Ok<Dto.ProductDto>(new()
@@ -176,7 +176,7 @@ public static class MappingExtensions
             Price = model.UnitPrice.Value,
         });
     }
-    
+
 
     public static Result<AggregateRoots.Voucher> ToModel(this Dto.VoucherDto dto)
     {
@@ -185,7 +185,7 @@ public static class MappingExtensions
             Id = dto.Id,
             Created = dto.Created,
             LastModified = dto.LastModified,
-            Code = VoucherCode.From(dto.Code),
+            Code = dto.Code == VoucherCode.StoreWide.Value ? VoucherCode.StoreWide : VoucherCode.From(dto.Code),
             Discount = Discount.FromOrBoundary(dto.Discount)
         });
     }
