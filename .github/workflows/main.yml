@@ -23,7 +23,8 @@ jobs:
         run: |
           cd ./Webshop.Catalog.Solution/ && 
           docker-compose up -d && 
-          timeout 60s sh -c 'until docker ps | grep webshop.order | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done'
+          timeout 60s sh -c 'until docker ps | grep webshop.order | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done' &&
+          curl -d '' http://127.0.0.1:8000/?seed=1
 
       - name: Run API tests
         run: |

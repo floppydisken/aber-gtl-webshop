@@ -40,6 +40,8 @@ namespace Webshop.Help.Pages
             CreateCustomerTable();
             CreateProductTable();
             CreateProductCategoryTable();
+            SeedCustomersData();
+            SeedProductData();
             TempData["errors"] = Errors;
             return Redirect("/?seed=1");
         }
@@ -114,6 +116,18 @@ namespace Webshop.Help.Pages
             "[CategoryId] ASC" +
             ")" +
             ")";
+            ExecuteSQL(sql, this.connectionString);
+        }
+        
+        private void SeedCustomersData()
+        {
+            string sql = System.IO.File.ReadAllText("./Seed Demo Customers.sql");;
+            ExecuteSQL(sql, this.connectionString);
+        }
+
+        private void SeedProductData()
+        {
+            string sql = System.IO.File.ReadAllText("./SeedProducts.sql");;
             ExecuteSQL(sql, this.connectionString);
         }
 
