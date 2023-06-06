@@ -30,6 +30,7 @@ namespace Webshop.Help.Pages
 
         }
 
+        [IgnoreAntiforgeryToken]
         public IActionResult OnPost()
         {
             //create the database
@@ -121,7 +122,7 @@ namespace Webshop.Help.Pages
         
         private void SeedCustomersData()
         {
-            string sql = System.IO.File.ReadAllText("./Seed Demo Customers.sql");;
+            string sql = System.IO.File.ReadAllText("./Seed Demo Customers.sql");
             ExecuteSQL(sql, this.connectionString);
         }
 
