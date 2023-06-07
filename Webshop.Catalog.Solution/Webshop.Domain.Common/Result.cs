@@ -52,6 +52,9 @@ public class Result
     {
         return new Result<T>(value, true, null);
     }
+    
+    public static ResultBuilder<T> Try<T>(Func<T> mapper)
+        => new ResultBuilder<T>().Try(mapper);
 
     public static Result Combine(params Result[] results)
     {

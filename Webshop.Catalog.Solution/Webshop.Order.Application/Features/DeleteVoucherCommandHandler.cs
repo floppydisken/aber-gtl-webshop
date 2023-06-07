@@ -16,10 +16,10 @@ public class DeleteVoucherCommandHandler : IDeleteVoucherCommandHandler
     
     public async Task<Result> Handle(DeleteVoucherCommand command, CancellationToken cancellationToken = default)
     {
-        var voucherCodeResult = FluentVogen
-            .UseMapper(() => VoucherCode.From(command.Code))
-            .UseError((e) => Errors.General.ValueIsInvalid(nameof(command.Code), e.Message))
-            .Run();
+        var voucherCodeResult = Result
+            .Try(() => VoucherCode.From(command.Code))
+            .Catch((e) => Errors.General.ValueIsInvalid(nameof(command.Code), e.Message))
+            .Build();
 
         if (voucherCodeResult.Failure) 
             return voucherCodeResult;

@@ -1,4 +1,5 @@
-﻿using Webshop.Application.Contracts;
+﻿using Vogen;
+using Webshop.Application.Contracts;
 using Webshop.Domain.Common;
 using Webshop.Order.Application.Abstractions;
 using Webshop.Order.Domain;
@@ -55,8 +56,6 @@ public class BuyCommandHandler : IBuyCommandHandler
             .Where(p => p.AmountInStock == Quantity.Zero)
             .ToArray();
 
-        var stocks = products.Select(p => p.AmountInStock.Value);
-
         if (productsNotInStock.Any())
         {
             return Result.Fail(Errors.General.ValueIsInvalid(
@@ -96,10 +95,10 @@ public class BuyCommandHandler : IBuyCommandHandler
             return Result.Fail(orderLines.Error);
         }
 
-        var voucherCodeResult = FluentVogen
-            .UseMapper(() => VoucherCode.From(command.VoucherCode))
-            .UseError(e => Errors.General.ValueIsInvalid(nameof(command.VoucherCode), e.Message))
-            .Run();
+        var voucherCodeResult = Result
+            .Try(() => VoucherCode.From(command.VoucherCode))
+            .Catch(e => Errors.General.ValueIsInvalid(nameof(command.VoucherCode), e.Message))
+            .Build();
 
         var voucher = voucherCodeResult.Success
             ? await voucherRepository.GetByCodeAsync(voucherCodeResult)

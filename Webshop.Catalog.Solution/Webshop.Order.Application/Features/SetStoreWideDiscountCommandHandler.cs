@@ -20,16 +20,16 @@ public class SetStoreWideDiscountCommandHandler : ISetStoreWideDiscountCommandHa
     {
         var discount = await voucherRepository.GetByCodeAsync(VoucherCode.StoreWide);
 
-        var discountResult = FluentVogen
-            .UseMapper(() => Discount.From(command.Amount))
-            .UseError((e) =>
+        var discountResult = Result
+            .Try(() => Discount.From(command.Amount))
+            .Catch((e) =>
                 Errors.General.ValueOutOfRange(
                     nameof(command.Amount),
                     Discount.Min.Value,
                     Discount.Max.Value,
                     e.Message
                 )
-            ).Run();
+            ).Build();
 
         if (discountResult.Failure)
         {

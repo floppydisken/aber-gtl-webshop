@@ -29,11 +29,11 @@ public static class MappingExtensions
             return Result.Fail<AggregateRoots.Order>(orderLinesResult.Error);
         }
 
-        var orderStatusResult = FluentVogen
-            .UseMapper(() => OrderStatus.From(dto.Status))
-            .UseError((e) => Errors.General.ValueIsInvalid(nameof(dto.Status),
+        var orderStatusResult = Result
+            .Try(() => OrderStatus.From(dto.Status))
+            .Catch((e) => Errors.General.ValueIsInvalid(nameof(dto.Status),
                 $"Could not deserialize {nameof(Dto.OrderDto)} since {dto.Status} is an invalid status."))
-            .Run();
+            .Build();
 
         return Result.Ok<AggregateRoots.Order>(new()
         {
@@ -99,32 +99,32 @@ public static class MappingExtensions
 
     public static Result<AggregateRoots.Product> ToModel(this Dto.ProductDto dto)
     {
-        var nameResult = FluentVogen
-            .UseMapper(() => NonEmptyString.From(dto.Name))
-            .UseError((e) => Errors.General.ValueIsEmpty(nameof(dto.Name)))
-            .Run();
+        var nameResult = Result
+            .Try(() => NonEmptyString.From(dto.Name))
+            .Catch((e) => Errors.General.ValueIsEmpty(nameof(dto.Name)))
+            .Build();
 
         if (nameResult.Failure)
         {
             return Result.Fail<AggregateRoots.Product>(nameResult.Error);
         }
 
-        var skuResult = FluentVogen
-            .UseMapper(() => NonEmptyString.From(dto.SKU))
-            .UseError(_ => Errors.General.ValueIsEmpty(nameof(dto.SKU)))
-            .Run();
+        var skuResult = Result
+            .Try(() => NonEmptyString.From(dto.SKU))
+            .Catch(_ => Errors.General.ValueIsEmpty(nameof(dto.SKU)))
+            .Build();
         if (skuResult.Failure)
         {
             return Result.Fail<AggregateRoots.Product>(skuResult.Error);
         }
 
-        var amountInStock = FluentVogen
-            .UseMapper(() => Quantity.FromOrBoundary(dto.AmountInStock))
-            .Run();
+        var amountInStock = Result
+            .Try(() => Quantity.FromOrBoundary(dto.AmountInStock))
+            .Build();
 
-        var minStock = FluentVogen
-            .UseMapper(() => Quantity.FromOrBoundary(dto.MinStock))
-            .Run();
+        var minStock = Result
+            .Try(() => Quantity.FromOrBoundary(dto.MinStock))
+            .Build();
 
         if (!Enum.TryParse(dto.Currency, out Currency currency))
         {
