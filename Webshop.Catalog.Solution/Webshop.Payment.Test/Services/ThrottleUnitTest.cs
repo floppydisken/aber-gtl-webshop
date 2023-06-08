@@ -1,11 +1,11 @@
 using Microsoft.Extensions.Configuration;
-using PSU_PaymentGateway.Services;
+using Webshop.Payment.Api.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Xunit;
 
-namespace PSU_PaymentGatewayTest
+namespace Webshop.Payment.Test
 {
     [Category("Service Tests")]
     public class ThrottleUnitTest

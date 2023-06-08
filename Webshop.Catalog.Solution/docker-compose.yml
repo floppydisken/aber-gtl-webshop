@@ -3,14 +3,17 @@ services:
   help:
     # SeQ is a framework for logging of exceptions etc
     container_name: webshophelp
-    image: brhv/webshophelp
+    build: 
+      context: .
+      dockerfile: ./Webshop.Help/Dockerfile
     restart: unless-stopped
     ports:
-      - 8000:80      
+      - 8000:5000
     networks:
       - backtier
     environment:
       - SERVER=webshopdatabase
+
   seq:
     # SeQ is a framework for logging of exceptions etc
     container_name: SeQ
@@ -23,62 +26,119 @@ services:
       - backtier
     environment:
       - ACCEPT_EULA=Y
+
   smtp4dev:
     # development time email server and client, easy to test sending emails
     container_name: smtp4dev
     image: rnwood/smtp4dev:latest
     ports:
-      - 8082:80
-      - 26:25
+      - "8082:80"
+      - "26:25"
     networks:
       - backtier
+
   paymentapi:
-   # the payment API
     container_name: webshop.payment
-    image: brhv/webshoppaymentapi
+    build: 
+      context: .
+      dockerfile: ./Webshop.Payment.Api/Dockerfile
     restart: unless-stopped
     ports:
-      - 8083:80
+      - 8083:5000
     networks:
       - backtier
+
   catalogapi:
-  # the catalog API
     container_name: webshop.catalog
-    image: brhv/webshopcatalogapi
+    build: 
+      context: .
+      dockerfile: ./Webshop.Catalog.Api/Dockerfile
     restart: unless-stopped
     ports:
-        - 8084:80
+      - 8088:5000
     networks:
-        - backtier
+      - backtier
+
   customerapi:
-  # the customer API
     container_name: webshop.customer
-    image: brhv/webshopcustomerapi
+    depends_on:
+      - sqlexpress
+    build: 
+      context: .
+      dockerfile: ./Webshop.Customer.Api/Dockerfile
     restart: unless-stopped
     ports:
-        - 8085:80
+      - 8085:5000
     networks:
-        - backtier
+      - backtier
+
+  orderapi:
+    container_name: webshop.order
+    depends_on:
+      - customerapi
+      - catalogapi
+      - paymentapi
+    build: 
+      context: .
+      dockerfile: ./Webshop.Order.Api/Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8086:5000
+    networks:
+      - backtier
+    healthcheck:
+      test: curl --fail localhost:5000/api/health || exit 1
+      interval: 2s
+      retries: 10
+      start_period: 2s
+      timeout: 5s
+
   sqlexpress:
-  #the sql server
     container_name: webshopdatabase
     image: mcr.microsoft.com/mssql/server:latest
     restart: unless-stopped
     ports:
-        - 1433:1433
+      - 1433:1433
     environment:
-        - ACCEPT_EULA=Y
-        - SA_PASSWORD=PSU@password
-        - MSSQL_PID=Express
-    volumes:
-        - ./data:/var/opt/mssql/data
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=PSU@password
+      - MSSQL_PID=Express
     networks:
-        - backtier
+      - backtier
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P PSU@password -Q "SELECT 1" || exit 1
+      interval: 5s
+      timeout: 30s
+      retries: 10
+      start_period: 30s
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - 27017:27017
+    networks:
+      - backtier
+
+  mongo-express:
+    image: mongo-express
+    container_name: mongoexpress
+    depends_on: 
+      - mongo
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    ports:
+      - 8087:8081
+    networks:
+      - backtier
+
 networks:
   # The presence of these objects is sufficient to define them
   backtier: {}
-
-
-
-
-

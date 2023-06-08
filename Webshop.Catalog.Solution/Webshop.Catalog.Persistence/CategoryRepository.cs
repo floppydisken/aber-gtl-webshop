@@ -35,7 +35,7 @@ namespace Webshop.Catalog.Persistence
         {
             try
             {
-                var category = await GetById(parentId);
+                var category = await GetByIdAsync(parentId);
                 return category != null;
             }
             catch(Exception ex)
@@ -54,7 +54,7 @@ namespace Webshop.Catalog.Persistence
             }
         }
 
-        public async Task<Domain.AggregateRoots.Category> GetById(int id)
+        public async Task<Domain.AggregateRoots.Category> GetByIdAsync(int id)
         {
             using (var connection = dataContext.CreateConnection())
             {

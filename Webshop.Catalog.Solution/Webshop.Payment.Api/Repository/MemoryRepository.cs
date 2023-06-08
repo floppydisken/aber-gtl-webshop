@@ -1,8 +1,9 @@
-﻿using PSU_PaymentGateway.Models;
+﻿using Webshop.Payment.Api.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Webshop.Domain.Common;
 
-namespace PSU_PaymentGateway.Repository
+namespace Webshop.Payment.Api.Repository
 {
     public class MemoryRepository : IMemoryRepository
     {
@@ -15,20 +16,14 @@ namespace PSU_PaymentGateway.Repository
         public Result AddTransaction(Transaction transaction)
         {
             bool exists = ExistsTransaction(transaction);
-            if (!exists)
-            {
-                this.transactions.Add(transaction);
-                return Result.Ok();
-            }
-            else
-            {
-                return Result.Fail("A transaction with these parameters already exists. For security reasons two identical transactions cannot be processed (Amount and Cardnumber)");
-            }            
+            
+            this.transactions.Add(transaction);
+            return Result.Ok();
         }
 
         private bool ExistsTransaction(Transaction transaction)
         {
-            return this.transactions.Any(x=>x.Amount == transaction.Amount && x.Payment.CardNumber == transaction.Payment.CardNumber);
+            return this.transactions.Any(x => x.Amount == transaction.Amount && x.Payment.CardNumber == transaction.Payment.CardNumber);
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using EnsureThat;
 using System;
+using Webshop.Domain.Common;
 
-namespace PSU_PaymentGateway.Models
+namespace Webshop.Payment.Api.Models
 {
     /// <summary>
     /// This is the entity payment
@@ -33,8 +34,12 @@ namespace PSU_PaymentGateway.Models
             CVC = cvc;
         }
 
-        public string CardNumber { get; private set; }
-        public string ExpirationDate { get; private set; }
-        public int CVC { get; private set; }
+        public Payment()
+        {
+        }
+
+        public string CardNumber { get; set; }
+        public string ExpirationDate { get; set; }
+        public int CVC { get; set; }
     }
 }

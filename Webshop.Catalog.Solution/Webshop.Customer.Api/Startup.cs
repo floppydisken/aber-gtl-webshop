@@ -52,7 +52,7 @@ namespace Webshop.Customer.Api
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<DataContext, DataContext>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(opts => opts.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             services.AddScoped<IDispatcher>(sp => new Dispatcher(sp.GetService<IMediator>()));
             services.AddCustomerApplicationServices();

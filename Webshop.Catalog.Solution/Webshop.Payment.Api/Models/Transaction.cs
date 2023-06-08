@@ -1,8 +1,9 @@
 ﻿using EnsureThat;
 using Microsoft.Extensions.Logging;
 using System;
+using Webshop.Domain.Common;
 
-namespace PSU_PaymentGateway.Models
+namespace Webshop.Payment.Api.Models
 {
     public class Transaction
     {        
@@ -13,6 +14,7 @@ namespace PSU_PaymentGateway.Models
             TransactionId = Guid.NewGuid();
             Created = DateTime.UtcNow;
         }
+        public Transaction() { }
         static Transaction() { }
         public static Result<Transaction> Create(int amount, Payment payment)
         {
@@ -24,12 +26,12 @@ namespace PSU_PaymentGateway.Models
             }
             catch (Exception ex)
             {
-                return Result.Fail<Transaction>(ex.Message);
+                return Result.Fail<Transaction>(new Error(nameof(Exception), ex.Message));
             }
         }
-        public DateTime Created { get; private set; }
-        public int Amount { get; private set; }
-        public Payment Payment { get; private set; }
-        public Guid TransactionId { get; private set; }
+        public DateTime Created { get; set; }
+        public int Amount { get; set; }
+        public Payment Payment { get; set; }
+        public Guid TransactionId { get; set; }
     }
 }

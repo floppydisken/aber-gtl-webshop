@@ -1,24 +1,25 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PSU_PaymentGateway.Models;
-using PSU_PaymentGateway.Repository;
-using PSU_PaymentGateway.Services;
-using Serilog;
-using System;
-using System.Threading.Tasks;
+using Webshop.Domain.Common;
+using Webshop.Payment.Api.Models;
+using Webshop.Payment.Api.Repository;
+using Webshop.Payment.Api.Services;
 
-namespace PSU_PaymentGateway.Controllers
+namespace Webshop.Payment.Api.Controllers
 {
     [Route("api/payment")]
     [ApiController]
     public class PaymentController : ControllerBase
     {
         private IMemoryRepository transactionRepository;
-        private IThrottleService throttleService;        
+        private IThrottleService throttleService;
         private ILogger<PaymentController> logger;
-        public PaymentController(IMemoryRepository transactionRepository, IThrottleService throttleService, ILogger<PaymentController> logger)
+        public PaymentController(
+            IMemoryRepository transactionRepository,
+            IThrottleService throttleService,
+            ILogger<PaymentController> logger
+        )
         {
             this.throttleService = throttleService;
             this.transactionRepository = transactionRepository;
@@ -27,32 +28,32 @@ namespace PSU_PaymentGateway.Controllers
 
         [HttpPost]
         [Route("process")]
-        public Result<Transaction> ProcessPayment(PaymentRequest request)
+        public IActionResult ProcessPayment([FromBody] PaymentRequest request)
         {
             //check for throttling
-            if(!this.throttleService.CanExecute())
-            {
-                return Result.Fail<Transaction>("The Payment service is not ready");
-            }
+            // if (!this.throttleService.CanExecute())
+            // {
+            //     return BadRequest("The Payment service is not ready");
+            // }
             //simulate process
-            Result<Payment> paymentResult = Payment.Create(request.CardNumber, request.ExpirationDate, request.CVC);
-            if (paymentResult.IsSuccess)
+            Result<Models.Payment> paymentResult = Models.Payment.Create(request.CardNumber, request.ExpirationDate, request.CVC);
+            if (paymentResult.Success)
             {
                 Result<Transaction> transactionResult = Transaction.Create(request.Amount, paymentResult.Value);
-                if (transactionResult.IsSuccess)
+                if (transactionResult.Success)
                 {
                     Result result = this.transactionRepository.AddTransaction(transactionResult.Value);
-                    if (result.IsFailure)
+                    if (result.Failure)
                     {
-                        return Result.Fail<Transaction>(result.Error);
+                        return BadRequest(result.Error);
                     }
                 }
-                return transactionResult;
+                return Ok(transactionResult.Value);
             }
             else
             {
-                logger.LogWarning("Unable to create new Payment object with the following error: {error}", new {error=paymentResult.Error});
-                return Result.Fail<Transaction>(paymentResult.Error);
+                logger.LogWarning("Unable to create new Payment object with the following error: {error}", new { error = paymentResult.Error });
+                return BadRequest(paymentResult.Error);
             }
         }
     }

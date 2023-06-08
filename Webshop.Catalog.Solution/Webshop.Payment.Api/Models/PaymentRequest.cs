@@ -1,6 +1,6 @@
 ﻿using EnsureThat;
 
-namespace PSU_PaymentGateway.Models
+namespace Webshop.Payment.Api.Models
 {
     /// <summary>
     /// This is the entity payment
@@ -20,9 +20,14 @@ namespace PSU_PaymentGateway.Models
             CVC = cvc;
             Amount = amount;
         }
-        public string CardNumber { get; private set; }
-        public string ExpirationDate { get; private set; }
-        public int CVC { get; private set; }
-        public int Amount { get; private set; }
+
+        public PaymentRequest()
+        {
+        }
+        
+        public string CardNumber { get; set; }
+        public string ExpirationDate { get; set; }
+        public int CVC { get; set; }
+        public int Amount { get; set; }
     }
 }

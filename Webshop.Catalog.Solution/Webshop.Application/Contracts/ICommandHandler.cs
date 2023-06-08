@@ -7,12 +7,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Webshop.Domain.Common;
 
-namespace Webshop.Application.Contracts
-{
-    public interface ICommandHandler<TCommand>
-       : IRequestHandler<TCommand, Result> where TCommand : ICommand
-    {
-        new Task<Result> Handle(TCommand command, CancellationToken cancellationToken = default);
+namespace Webshop.Application.Contracts;
 
-    }
+public interface ICommandHandler<TCommand>
+    : IRequestHandler<TCommand, Result> where TCommand : ICommand
+{
+    new Task<Result> Handle(TCommand command, CancellationToken cancellationToken = default);
+
 }

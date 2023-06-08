@@ -15,8 +15,8 @@ namespace Webshop.Catalog.Application
     {
         public static IServiceCollection AddCatalogApplicationServices(this IServiceCollection services)
         {
-            services.AddApplicationServices(); //register the general services from webshop.application
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddDispatcher(); //register the general services from webshop.application
+            services.AddMediatR(opts => opts.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IDispatcher>(sp => new Dispatcher(sp.GetService<IMediator>()));
             return services;

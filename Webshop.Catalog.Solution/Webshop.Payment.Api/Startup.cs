@@ -1,21 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using PSU_PaymentGateway.Repository;
-using PSU_PaymentGateway.Services;
+using Webshop.Payment.Api.Repository;
+using Webshop.Payment.Api.Services;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace PSU_PaymentGateway
+namespace Webshop.Payment.Api
 {
     public class Startup
     {
@@ -45,6 +39,7 @@ namespace PSU_PaymentGateway
             //add custom services
             services.AddSingleton<IMemoryRepository, MemoryRepository>();
             services.AddSingleton<IThrottleService, ThrottleService>();
+            services.AddHttpClient();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

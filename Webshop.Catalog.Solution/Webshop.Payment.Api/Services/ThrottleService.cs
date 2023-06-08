@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using System;
 
-namespace PSU_PaymentGateway.Services
+namespace Webshop.Payment.Api.Services
 {
     public class ThrottleService : IThrottleService
     {

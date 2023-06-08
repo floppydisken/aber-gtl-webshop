@@ -26,8 +26,12 @@ namespace Webshop.Persistence.Common
             services.AddSingleton(a =>
             {
                 var configuration = a.GetService<IConfiguration>();
-                var serviceSettings = configuration.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
-                var mongoDbSettings = configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+                var serviceSettings = configuration
+                    .GetSection(nameof(ServiceSettings))
+                    .Get<ServiceSettings>();
+                var mongoDbSettings = configuration
+                    .GetSection(nameof(MongoDbSettings))
+                    .Get<MongoDbSettings>();
                 var mongoClient = new MongoClient(mongoDbSettings.ConnectionString);
                 return mongoClient.GetDatabase(serviceSettings.ServiceName);
             });
@@ -35,7 +39,10 @@ namespace Webshop.Persistence.Common
             return services;
         }
 
-        public static IServiceCollection AddMongoRepository<T>(this IServiceCollection services, string collectionName) where T : AggregateRoot
+        public static IServiceCollection AddMongoRepository<T>(
+            this IServiceCollection services,
+            string collectionName
+        ) where T : AggregateRoot
         {
             services.AddSingleton<IRepository<T>>(a =>
             {
