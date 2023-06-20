@@ -25,4 +25,20 @@ public class DiscountTests
         result = Discount.From(14.9999m);
         Assert.Equal(14.9999m, result.Value);
     }
+
+    [Fact]
+    public void AdditionClampsToBoundaries()
+    {
+        var result = Discount.From(10) + Discount.From(10);
+
+        Assert.Equal(result, Discount.Max);
+    }
+
+    [Fact]
+    public void SubtractionClampsToBoundaries()
+    {
+        var result = Discount.From(10) - Discount.Max;
+
+        Assert.Equal(result, Discount.Min);
+    }
 }
